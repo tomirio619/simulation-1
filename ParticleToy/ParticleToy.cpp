@@ -124,7 +124,7 @@ static void post_display ( void )
 			// glRasterPos2i(0, 0);
 			glReadPixels(0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 			static char filename[80];
-			sprintf_s(filename, "snapshots/img%.5i.png", frame_number / FRAME_INTERVAL);
+			sprintf(filename, "snapshots/img%.5i.png", frame_number / FRAME_INTERVAL);
 			printf("Dumped %s.\n", filename);
 //			saveImageRGBA(filename, buffer, w, h);
 			

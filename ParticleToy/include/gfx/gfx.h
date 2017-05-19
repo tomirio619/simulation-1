@@ -32,9 +32,7 @@
 //
 
 #if !defined(HAVE_BOOL)
-typedef int bool;
-const bool false = 0;
-const bool true = 1;
+#include <stdbool.h>
 #endif
 
 // Microsoft doesn't define std::min() & std::max() because it conflicts with
