@@ -1,13 +1,20 @@
 cmake_minimum_required(VERSION 3.8)
 project(simulation_1)
 
-set(GCC_COVERAGE_COMPILE_FLAGS "-D FREEGLUT_STATIC")
-
-set(CMAKE_EXE_LINKER_FLAGS "-lfreeglut_static -lopengl32 -lwinmm -lgdi32 -Wl,--subsystem,windows")
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -pthread -fpermissive")
-
 set(CMAKE_CXX_STANDARD 11)
+
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
+# Set Compile and Linker flags
+
+set(GCC_COVERAGE_COMPILE_FLAGS "-lfreeglut_static -lopengl32 -static-libgcc -lwinmm -lgdi32 -Wl,--subsystem,windows")
+SET(GCC_COVERAGE_LINK_FLAGS    "-D FREEGLUT_STATIC")
+
+set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
+
+
+
 
 set(SOURCE_FILES
         ParticleToy/CircularWireConstraint.cpp
@@ -21,10 +28,7 @@ set(SOURCE_FILES
         ParticleToy/RodConstraint.h
         ParticleToy/Solver.cpp
         ParticleToy/SpringForce.cpp
-        ParticleToy/SpringForce.h
-        ParticleToy/stdafx.cpp
-        ParticleToy/stdafx.h
-        ParticleToy/targetver.h)
+        ParticleToy/SpringForce.h)
 
 find_package (OpenGL REQUIRED)
 #find_package (GLUT REQUIRED)
