@@ -33,6 +33,17 @@ double vecSqrLen(int n, double v[]) {
     return vecDot(n, v, v);
 }
 
+/**
+ * In mathematics, the conjugate gradient method is an algorithm for the numerical solution of particular systems
+ * of linear equations, namely those whose matrix is symmetric and positive-definite.
+ * @param n
+ * @param A
+ * @param x
+ * @param b
+ * @param epsilon
+ * @param steps
+ * @return
+ */
 double ConjGrad(int n, implicitMatrix *A, double x[], double b[],
                 double epsilon,    // how low should we go?
                 int *steps) {

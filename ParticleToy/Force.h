@@ -16,7 +16,8 @@ public:
     Force();
 
     //Compute the force
-    virtual Vec2f computeForce(Particle* p);
+    virtual Vec2f computeForce(Particle *p);
+
     std::vector<Particle *> particles;
     double gravitationalConstant;
 

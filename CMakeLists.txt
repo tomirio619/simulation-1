@@ -28,7 +28,16 @@ set(SOURCE_FILES
         ParticleToy/RodConstraint.h
         ParticleToy/Solver.cpp
         ParticleToy/SpringForce.cpp
-        ParticleToy/SpringForce.h ParticleToy/Force.cpp ParticleToy/Force.h ParticleToy/GravityForce.cpp ParticleToy/GravityForce.h ParticleToy/ConstraintForce.cpp ParticleToy/ConstraintForce.h)
+        ParticleToy/SpringForce.h
+        ParticleToy/Force.cpp
+        ParticleToy/Force.h
+        ParticleToy/GravityForce.cpp
+        ParticleToy/GravityForce.h
+        ParticleToy/ConstraintForce.cpp
+        ParticleToy/ConstraintForce.h
+        ParticleToy/ForwardEuler.cpp
+        ParticleToy/ForwardEuler.h
+        ParticleToy/RK4.cpp ParticleToy/RK4.h)
 
 find_package (OpenGL REQUIRED)
 #find_package (GLUT REQUIRED)

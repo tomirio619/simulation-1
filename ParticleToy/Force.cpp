@@ -9,4 +9,3 @@ Force::Force() {}
 Vec2f Force::computeForce(Particle* p) {
     return 0;
 }
-
