@@ -5,6 +5,8 @@
 #include "SpringForce.h"
 #include "RodConstraint.h"
 #include "CircularWireConstraint.h"
+#include "Force.h"
+#include "GravityForce.h"
 
 #include <vector>
 #include <stdlib.h>
@@ -14,7 +16,7 @@
 /* macros */
 
 /* external definitions (from solver) */
-extern void simulation_step(std::vector<Particle *> pVector, float dt);
+extern void simulation_step(std::vector<Force *> forces, float dt);
 
 /* global variables */
 
@@ -26,6 +28,8 @@ static int frame_number;
 
 // static Particle *pList;
 static std::vector<Particle *> pVector;
+
+std::vector<Force *> forceVector;
 
 static int win_id;
 static int win_x, win_y;
@@ -80,13 +84,21 @@ static void init_system(void) {
     // Create three particles, attach them to each other, then add a
     // circular wire constraint to the first.
 
-    pVector.push_back(new Particle(center + offset));
-    pVector.push_back(new Particle(center + offset + offset));
-    pVector.push_back(new Particle(center + offset + offset + offset));
+    double particleMass = 1.0f;
+
+    pVector.push_back(new Particle(center + offset, particleMass));
+    pVector.push_back(new Particle(center + offset + offset, particleMass));
+    pVector.push_back(new Particle(center + offset + offset + offset, particleMass));
 
     // You shoud replace these with a vector generalized forces and one of
     // constraints...
-    delete_this_dummy_spring = new SpringForce(pVector[0], pVector[1], dist, 1.0, 1.0);
+
+    Force* gravityForce = new GravityForce(pVector);
+    double restLength = 0.1;
+    Force* springForce = new SpringForce(pVector[1], pVector[2], restLength, 0.2, 0.3);
+
+    forceVector.push_back(gravityForce);
+    forceVector.push_back(springForce);
     delete_this_dummy_rod = new RodConstraint(pVector[1], pVector[2], dist);
     delete_this_dummy_wire = new CircularWireConstraint(pVector[0], center, dist);
 }
@@ -255,7 +267,7 @@ static void reshape_func(int width, int height) {
 }
 
 static void idle_func(void) {
-    if (dsim) simulation_step(pVector, dt);
+    if (dsim) simulation_step(forceVector, dt);
     else {
         get_from_UI();
         remap_GUI();
@@ -320,8 +332,9 @@ int main(int argc, char **argv) {
 
     if (argc == 1) {
         N = 64;
-        dt = 0.1f;
+        dt = 0.001f;
         d = 5.f;
+
         fprintf(stderr, "Using defaults : N=%d dt=%g d=%g\n",
                 N, dt, d);
     } else {

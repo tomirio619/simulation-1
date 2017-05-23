@@ -2,7 +2,24 @@
 #include <GL/glut.h>
 
 SpringForce::SpringForce(Particle *p1, Particle *p2, double dist, double ks, double kd) :
-        m_p1(p1), m_p2(p2), m_dist(dist), m_ks(ks), m_kd(kd) {}
+        m_p1(p1), m_p2(p2), m_dist(dist), m_ks(ks), m_kd(kd) {
+
+    Force();
+    particles.push_back(p1);
+    particles.push_back(p2);
+
+}
+
+Vec2f SpringForce::computeForce(Particle *p) {
+
+    Vec2f l = this->m_p1->m_Position - this->m_p2->m_Position;
+    int l_bars = l.dim();
+    float r = this->m_dist;
+
+    Vec2f l_dot = this->m_p1->m_Velocity - this->m_p2->m_Velocity;
+
+    return (m_ks * (l_bars - r) + m_kd * (l_dot * l)/l_bars) * (1/l_bars);
+}
 
 void SpringForce::draw() {
     glBegin(GL_LINES);

@@ -13,3 +13,7 @@ void RodConstraint::draw() {
     glEnd();
 
 }
+
+Vec2f RodConstraint::computeForce(Particle *p) {
+
+}

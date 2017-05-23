@@ -5,7 +5,7 @@
 class Particle {
 public:
 
-    Particle(const Vec2f &ConstructPos);
+    Particle(const Vec2f &ConstructPos, double m);
 
     virtual ~Particle(void);
 
@@ -16,4 +16,6 @@ public:
     Vec2f m_ConstructPos;
     Vec2f m_Position;
     Vec2f m_Velocity;
+    Vec2f force;
+    double mass;
 };

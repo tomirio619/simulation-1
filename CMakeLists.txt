@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.7)
 project(simulation_1)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -28,7 +28,7 @@ set(SOURCE_FILES
         ParticleToy/RodConstraint.h
         ParticleToy/Solver.cpp
         ParticleToy/SpringForce.cpp
-        ParticleToy/SpringForce.h)
+        ParticleToy/SpringForce.h ParticleToy/Force.cpp ParticleToy/Force.h ParticleToy/GravityForce.cpp ParticleToy/GravityForce.h ParticleToy/ConstraintForce.cpp ParticleToy/ConstraintForce.h)
 
 find_package (OpenGL REQUIRED)
 #find_package (GLUT REQUIRED)
