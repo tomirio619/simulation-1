@@ -10,8 +10,6 @@ public:
 
 
     void draw();
-
-private:
     Vec2f computeForce(Particle *p) override;
 
 private:

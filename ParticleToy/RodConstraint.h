@@ -11,6 +11,17 @@ public:
 
     void draw();
 
+    std::vector<Vec2f> getq() override;
+
+    double getC() override;
+
+    std::vector<Vec2f> getJ() override;
+
+    std::vector<double> getW() override;
+
+    std::vector<Vec2f> getJDot() override;
+
+
 private:
 
     Particle *const m_p1;

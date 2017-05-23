@@ -93,9 +93,13 @@ static void init_system(void) {
     // You shoud replace these with a vector generalized forces and one of
     // constraints...
 
-    Force* gravityForce = new GravityForce(pVector);
-    double restLength = 0.1;
-    Force* springForce = new SpringForce(pVector[1], pVector[2], restLength, 0.2, 0.3);
+    std::vector<Particle *> gravityParticles;
+    gravityParticles.push_back(pVector[0]);
+//    gravityParticles.push_back(pVector[1]);
+
+    Force* gravityForce = new GravityForce(gravityParticles);
+    double restLength = 0.5;
+    Force* springForce = new SpringForce(pVector[1], pVector[2], restLength, 0.1, 0.1);
 
     forceVector.push_back(gravityForce);
     forceVector.push_back(springForce);

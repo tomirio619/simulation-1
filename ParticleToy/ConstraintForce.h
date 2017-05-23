@@ -13,6 +13,17 @@ class ConstraintForce : public Force {
 public:
     ConstraintForce();
 
+    virtual double getC();
+    virtual Vec2f getCdot();
+    virtual std::vector<Vec2f> getq(); //Get q, which is a vector of positions
+    virtual std::vector<Vec2f> getJ(); //Get J, which is the partial derivative vector
+    virtual std::vector<double> getW();
+    virtual std::vector<Vec2f> getJDot();
+    virtual std::vector<Vec2f> getqDot();
+    virtual std::vector<Vec2f> getQ();
+
+    Vec2f computeForce(Particle *p) override;
+
 };
 
 
