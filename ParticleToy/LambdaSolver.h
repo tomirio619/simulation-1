@@ -12,6 +12,7 @@
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 
+
 class LambdaSolver {
 
 public:

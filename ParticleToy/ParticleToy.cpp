@@ -5,13 +5,9 @@
 #include "SpringForce.h"
 #include "RodConstraint.h"
 #include "CircularWireConstraint.h"
-#include "Force.h"
 #include "GravityForce.h"
 #include "SlidingWireConstraint.h"
 
-#include <vector>
-#include <stdlib.h>
-#include <stdio.h>
 #include <GL/glut.h>
 
 /* macros */
