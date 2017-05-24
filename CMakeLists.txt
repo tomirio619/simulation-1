@@ -37,14 +37,17 @@ set(SOURCE_FILES
         ParticleToy/ConstraintForce.h
         ParticleToy/ForwardEuler.cpp
         ParticleToy/ForwardEuler.h
-        ParticleToy/RK4.cpp ParticleToy/RK4.h)
+        ParticleToy/RK4.cpp
+        ParticleToy/RK4.h
+
+        )
 
 find_package (OpenGL REQUIRED)
 #find_package (GLUT REQUIRED)
 
 link_directories(ParticleToy/lib/freeglut)
 
-include_directories(${OPENGL_INCLUDE_DIR} ParticleToy/include)
+include_directories(${OPENGL_INCLUDE_DIR} ParticleToy/include ParticleToy/lib/SparseMatrix)
 
 add_executable(simulation_1 ${SOURCE_FILES})
 

@@ -21,6 +21,10 @@ public:
 
     std::vector<Vec2f> getJDot() override;
 
+    std::vector<Vec2f> getqDot() override;
+
+    std::vector<Vec2f> getQ() override;
+
 
 private:
 

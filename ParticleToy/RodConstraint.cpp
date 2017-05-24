@@ -30,12 +30,17 @@ double RodConstraint::getC() {
     return pow((m_p1->m_Position[0] - m_p2->m_Position[0]), 2.0) + pow( (m_p1->m_Position[0] - m_p2->m_Position[1]), 2.0 ) - pow(m_dist, 2.0);
 }
 
+/**
+ * Partial derivatives of position with respect to x1, x2, y1, y2
+ * @return
+ */
 std::vector<Vec2f> RodConstraint::getJ() {
     std::vector<Vec2f> J;
-    J.push_back(2 * (m_p1->m_Position[0] - m_p2->m_Position[0]));
-    J.push_back(2 * (m_p1->m_Position[0] - m_p2->m_Position[0]));
-    J.push_back(2 * (m_p1->m_Position[1] - m_p2->m_Position[1]));
-    J.push_back(2 * (m_p1->m_Position[1] - m_p2->m_Position[1]));
+    J.push_back(2 * (m_p1->m_Position[0]));
+    J.push_back(-2 * (m_p2->m_Position[0]));
+    J.push_back(2 * (m_p1->m_Position[1]));
+    J.push_back(-2 * (m_p2->m_Position[1]));
+
     return J;
 }
 
@@ -46,9 +51,33 @@ std::vector<double> RodConstraint::getW() {
     return W;
 }
 
-std::vector<Vec2f> RodConstraint::getJDot() {
-    std::vector<Vec2f> JDot;
-
+/**
+ * Partial derivatives of the position values is the velocity
+ * @return
+ */
+std::vector<Vec2f> RodConstraint::getqDot() {
+    std::vector<Vec2f> qDot;
+    qDot.push_back(m_p1->m_Velocity);
+    qDot.push_back(m_p2->m_Velocity);
+    return qDot;
 }
 
+std::vector<Vec2f> RodConstraint::getJDot() {
+    std::vector<Vec2f> JDot;
+    JDot.push_back(2 * (m_p1->m_Position[0]));
+    JDot.push_back(-2 * (m_p2->m_Position[0]));
+    JDot.push_back(2 * (m_p1->m_Position[1]));
+    JDot.push_back(-2 * (m_p2->m_Position[1]));
+    return JDot;
+}
 
+/**
+ * Force factor
+ * @return
+ */
+std::vector<Vec2f> RodConstraint::getQ() {
+    std::vector<Vec2f> Q;
+    Q.push_back(m_p1->force);
+    Q.push_back(m_p2->force);
+    return Q;
+}
