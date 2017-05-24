@@ -3,26 +3,33 @@
 //
 
 #include "LambdaSolver.h"
-#include "armadillo"
-#include "Particle.h"
+#include "Eigen/Dense"
 
 using namespace std;
-using namespace arma;
+using Eigen::MatrixXd;
+
 
 /**
- * Documentation of the Armadillo
- * http://arma.sourceforge.net/docs.html
+ * Compute the constraint force
+ * @param J
+ * @param W
+ * @param Jdot
+ * @param qDot
+ * @param Q
+ * @return
  */
+MatrixXd LambdaSolver::solveLambda(MatrixXd J, MatrixXd W, MatrixXd Jdot, MatrixXd qDot, MatrixXd Q) {
+    MatrixXd JW = J * W;
+    std::cout << JW << std::endl;
+    MatrixXd JWJT = JW * J.transpose();
+    MatrixXd JWJInv = JWJT.inverse();
+    MatrixXd JdotQdot = -Jdot*qDot.transpose();
+    MatrixXd JWQ = JW * Q.transpose();
 
-LambdaSolver::LambdaSolver(mat J, mat W, mat Jdot, mat qDot, mat Q) {
-    mat JWJ = J * W * J.t();
-    mat JWJInv = JWJ.i();
-    mat JdotQdot = -Jdot*qDot.t();
-    mat JWQ = J * W * Q.t();
+    MatrixXd LambdaT = JWJInv * (-JdotQdot - JWQ);
+    MatrixXd Lambda = LambdaT.transpose();
 
-    mat LambdaT = JWJInv * (-JdotQdot - JWQ);
-    mat Lambda = LambdaT.t();
+    MatrixXd QHat = Lambda * J;
 
-    mat QHat = Lambda * J;
+    return QHat;
 }
-

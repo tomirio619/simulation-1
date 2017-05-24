@@ -94,17 +94,29 @@ static void init_system(void) {
     // constraints...
 
     std::vector<Particle *> gravityParticles;
-    gravityParticles.push_back(pVector[0]);
+//    gravityParticles.push_back(pVector[0]);
 //    gravityParticles.push_back(pVector[1]);
 
-    Force* gravityForce = new GravityForce(gravityParticles);
+
     double restLength = 0.5;
     Force* springForce = new SpringForce(pVector[1], pVector[2], restLength, 0.1, 0.1);
 
-    forceVector.push_back(gravityForce);
-    forceVector.push_back(springForce);
-    Force* rodConstraintForce = new RodConstraint(pVector[1], pVector[2], dist);
+//    forceVector.push_back(gravityForce);
+//    forceVector.push_back(springForce);
+
+    Particle* centerParticle = new Particle(center, particleMass);
+    Particle* bottomParticle = new Particle(Vec2f(0.0, -0.2), particleMass);
+
+    pVector.push_back(centerParticle);
+    pVector.push_back(bottomParticle);
+
+    Force* rodConstraintForce = new RodConstraint(centerParticle, bottomParticle, dist);
     forceVector.push_back(rodConstraintForce);
+
+    gravityParticles.push_back(bottomParticle);
+    Force* gravityForce = new GravityForce(gravityParticles);
+    forceVector.push_back(gravityForce);
+
     delete_this_dummy_wire = new CircularWireConstraint(pVector[0], center, dist);
 }
 

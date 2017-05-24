@@ -2,8 +2,10 @@
 // Created by abdullah on 23/05/2017.
 //
 
-#include <arma/armadillo>
 #include "ConstraintForce.h"
+#include "Eigen/Dense"
+
+using Eigen::MatrixXd;
 
 ConstraintForce::ConstraintForce() {}
 
@@ -11,28 +13,34 @@ Vec2f ConstraintForce::computeForce(Particle *p) {
     return Force::computeForce(p);
 }
 
-mat ConstraintForce::getQ() {
-    return mat(1, 1, fill::zeros);
+MatrixXd ConstraintForce::getQ() {
+    MatrixXd matrix(1,1);
+    return matrix;
 }
 
-mat ConstraintForce::getqDot() {
-    return mat(1, 1, fill::zeros);
+MatrixXd ConstraintForce::getqDot() {
+    MatrixXd matrix(1,1);
+    return matrix;
 }
 
-mat ConstraintForce::getq() {
-    return mat(1, 1, fill::zeros);
+MatrixXd ConstraintForce::getq() {
+    MatrixXd matrix(1,1);
+    return matrix;
 }
 
-mat ConstraintForce::getJDot() {
-    return mat(1, 1, fill::zeros);
+MatrixXd ConstraintForce::getJDot() {
+    MatrixXd matrix(1,1);
+    return matrix;
 }
 
-mat ConstraintForce::getJ() {
-    return mat(1, 1, fill::zeros);
+MatrixXd ConstraintForce::getJ() {
+    MatrixXd matrix(1,1);
+    return matrix;
 }
 
-mat ConstraintForce::getW() {
-    return mat(1, 1, fill::zeros);
+MatrixXd ConstraintForce::getW() {
+    MatrixXd matrix(1,1);
+    return matrix;
 }
 
 Vec2f ConstraintForce::getCdot() {

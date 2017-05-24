@@ -2,9 +2,9 @@
 
 #include "Particle.h"
 #include "ConstraintForce.h"
-#include "armadillo"
+#include "Eigen/Dense"
 
-using namespace arma;
+using Eigen::MatrixXd;
 
 class RodConstraint : public ConstraintForce {
 public:
@@ -14,19 +14,19 @@ public:
 
     void draw();
 
-    mat getq() override;
+    MatrixXd getq() override;
 
     double getC() override;
 
-    mat getJ() override;
+    MatrixXd getJ() override;
 
-    mat getW() override;
+    MatrixXd getW() override;
 
-    mat getJDot() override;
+    MatrixXd getJDot() override;
 
-    mat getqDot() override;
+    MatrixXd getqDot() override;
 
-    mat getQ() override;
+    MatrixXd getQ() override;
 
 
 private:

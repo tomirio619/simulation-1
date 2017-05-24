@@ -5,15 +5,16 @@
 #ifndef SIMULATION_1_LAMBDASOLVER_H
 #define SIMULATION_1_LAMBDASOLVER_H
 
-
-#include <arma/armadillo>
 #include "Particle.h"
+#include "Eigen/Dense"
+
+using Eigen::MatrixXd;
 
 class LambdaSolver {
 
 public:
 
-    LambdaSolver(arma::mat J, arma::mat W, arma::mat Jdot, arma::mat qDot, arma::mat Q);
+    static MatrixXd solveLambda(MatrixXd J, MatrixXd W, MatrixXd Jdot, MatrixXd qDot, MatrixXd Q);
 };
 
 
