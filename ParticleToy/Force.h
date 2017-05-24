@@ -18,6 +18,8 @@ public:
     //Compute the force
     virtual Vec2f computeForce(Particle *p);
 
+    static void clearForces(std::vector<Particle *> particles);
+
     std::vector<Particle *> particles;
     double gravitationalConstant;
 

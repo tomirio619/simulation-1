@@ -39,7 +39,8 @@ set(SOURCE_FILES
         ParticleToy/ForwardEuler.h
         ParticleToy/RK4.cpp
         ParticleToy/RK4.h
-
+        ParticleToy/Midpoint.cpp
+        ParticleToy/Midpoint.h
         )
 
 find_package (OpenGL REQUIRED)

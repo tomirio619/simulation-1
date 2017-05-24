@@ -10,5 +10,6 @@
 
 #endif //SIMULATION_1_FORWARDEULER_H
 
-
-static void evaluate(std::vector<Particle *> particles, std::vector forces, std::vector constraints, double dt);
+namespace ForwardEuler {
+    static void evaluate(std::vector<Particle *> particles, std::vector forces, std::vector constraints, double dt);
+}
