@@ -2,6 +2,9 @@
 
 #include "Particle.h"
 #include "ConstraintForce.h"
+#include "armadillo"
+
+using namespace arma;
 
 class RodConstraint : public ConstraintForce {
 public:
@@ -11,19 +14,19 @@ public:
 
     void draw();
 
-    std::vector<Vec2f> getq() override;
+    mat getq() override;
 
     double getC() override;
 
-    std::vector<Vec2f> getJ() override;
+    mat getJ() override;
 
-    std::vector<double> getW() override;
+    mat getW() override;
 
-    std::vector<Vec2f> getJDot() override;
+    mat getJDot() override;
 
-    std::vector<Vec2f> getqDot() override;
+    mat getqDot() override;
 
-    std::vector<Vec2f> getQ() override;
+    mat getQ() override;
 
 
 private:

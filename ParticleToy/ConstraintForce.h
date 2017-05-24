@@ -7,6 +7,9 @@
 
 
 #include "Force.h"
+#include "armadillo"
+
+using namespace arma;
 
 class ConstraintForce : public Force {
 
@@ -15,12 +18,12 @@ public:
 
     virtual double getC();
     virtual Vec2f getCdot();
-    virtual std::vector<Vec2f> getq(); //Get q, which is a vector of positions
-    virtual std::vector<Vec2f> getJ(); //Get J, which is the partial derivative vector
-    virtual std::vector<double> getW();
-    virtual std::vector<Vec2f> getJDot();
-    virtual std::vector<Vec2f> getqDot();
-    virtual std::vector<Vec2f> getQ();
+    virtual mat getq(); //Get q, which is a vector of positions
+    virtual mat getJ(); //Get J, which is the partial derivative vector
+    virtual mat getW();
+    virtual mat getJDot();
+    virtual mat getqDot();
+    virtual mat getQ();
 
     Vec2f computeForce(Particle *p) override;
 

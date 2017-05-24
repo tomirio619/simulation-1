@@ -103,7 +103,8 @@ static void init_system(void) {
 
     forceVector.push_back(gravityForce);
     forceVector.push_back(springForce);
-    delete_this_dummy_rod = new RodConstraint(pVector[1], pVector[2], dist);
+    Force* rodConstraintForce = new RodConstraint(pVector[1], pVector[2], dist);
+    forceVector.push_back(rodConstraintForce);
     delete_this_dummy_wire = new CircularWireConstraint(pVector[0], center, dist);
 }
 

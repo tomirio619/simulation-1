@@ -6,15 +6,14 @@
 #define SIMULATION_1_LAMBDASOLVER_H
 
 
+#include <arma/armadillo>
+#include "Particle.h"
+
 class LambdaSolver {
 
 public:
-    LambdaSolver();
-    virtual Vect2f applyConstraintForce();
 
-private:
-    
-
+    LambdaSolver(arma::mat J, arma::mat W, arma::mat Jdot, arma::mat qDot, arma::mat Q);
 };
 
 

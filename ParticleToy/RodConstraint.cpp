@@ -1,5 +1,9 @@
 #include "RodConstraint.h"
+#include "LambdaSolver.h"
 #include <GL/glut.h>
+#include "armadillo"
+
+using namespace arma;
 
 RodConstraint::RodConstraint(Particle *p1, Particle *p2, double dist) :
         m_p1(p1), m_p2(p2), m_dist(dist) {
@@ -16,14 +20,22 @@ void RodConstraint::draw() {
 }
 
 Vec2f RodConstraint::computeForce(Particle *p) {
-
+    new LambdaSolver(
+            getJ(),
+            getW(),
+            getJDot(),
+            getqDot(),
+            getQ()
+    );
 }
 
-std::vector<Vec2f> RodConstraint::getq() {
-    std::vector<Vec2f> q;
-    q.push_back(m_p1->m_Position);
-    q.push_back(m_p2->m_Position);
-    return q;
+mat RodConstraint::getq() {
+    mat MatrixQ(4, 1, fill::zeros);
+    MatrixQ[0, 0] = m_p1->m_Position[0];
+    MatrixQ[1, 0] = m_p1->m_Position[1];
+    MatrixQ[2, 0] = m_p2->m_Position[0];
+    MatrixQ[3, 0] = m_p2->m_Position[1];
+    return MatrixQ;
 }
 
 double RodConstraint::getC() {
@@ -32,52 +44,60 @@ double RodConstraint::getC() {
 
 /**
  * Partial derivatives of position with respect to x1, x2, y1, y2
- * @return
+ *
+ * @return Matrix where on each row the partial derivative w.r.t. a variable (x1, x2, y1, y2) is
+ * In each column we have the formulas from C, but since we only have one it has only one column
  */
-std::vector<Vec2f> RodConstraint::getJ() {
-    std::vector<Vec2f> J;
-    J.push_back(2 * (m_p1->m_Position[0]));
-    J.push_back(-2 * (m_p2->m_Position[0]));
-    J.push_back(2 * (m_p1->m_Position[1]));
-    J.push_back(-2 * (m_p2->m_Position[1]));
+mat RodConstraint::getJ() {
+    mat MatrixJ(4, 1, fill::zeros);
+    MatrixJ[0, 0] = 2 * (m_p1->m_Position[0] - m_p2->m_Position[0]);
+    MatrixJ[0, 1] = 2 * (m_p1->m_Position[1] - m_p2->m_Position[1]);
+    MatrixJ[0, 2] = 2 * (m_p1->m_Position[0] - m_p2->m_Position[0]);
+    MatrixJ[0, 3] = 2 * (m_p1->m_Position[1] - m_p2->m_Position[1]);
 
-    return J;
+    return MatrixJ;
 }
 
-std::vector<double> RodConstraint::getW() {
-    std::vector<double> W;
-    W.push_back(1 / (m_p1->mass));
-    W.push_back(1 / (m_p2->mass));
-    return W;
+mat RodConstraint::getW() {
+    mat MatrixW(4, 4, fill::zeros);
+    MatrixW[0, 0] = 1 / (m_p1->mass);
+    MatrixW[1, 1] = 1 / (m_p1->mass);
+    MatrixW[2, 2] = 1 / (m_p2->mass);
+    MatrixW[3, 3] = 1 / (m_p1->mass);
+    return MatrixW;
 }
 
 /**
  * Partial derivatives of the position values is the velocity
  * @return
  */
-std::vector<Vec2f> RodConstraint::getqDot() {
-    std::vector<Vec2f> qDot;
-    qDot.push_back(m_p1->m_Velocity);
-    qDot.push_back(m_p2->m_Velocity);
-    return qDot;
+mat RodConstraint::getqDot() {
+    mat MatrixQDot(4, 1, fill::zeros);
+    MatrixQDot[0, 0] = m_p1->m_Velocity[0];
+    MatrixQDot[1, 0] = m_p1->m_Velocity[1];
+    MatrixQDot[2, 0] = m_p2->m_Velocity[0];
+    MatrixQDot[3, 0] = m_p2->m_Velocity[1];
+    return MatrixQDot;
 }
 
-std::vector<Vec2f> RodConstraint::getJDot() {
-    std::vector<Vec2f> JDot;
-    JDot.push_back(2 * (m_p1->m_Position[0]));
-    JDot.push_back(-2 * (m_p2->m_Position[0]));
-    JDot.push_back(2 * (m_p1->m_Position[1]));
-    JDot.push_back(-2 * (m_p2->m_Position[1]));
-    return JDot;
+mat RodConstraint::getJDot() {
+    mat MatrixJDot(4, 1, fill::zeros);
+    MatrixJDot[0, 0] = 2 * (m_p1->m_Velocity[0] - m_p2->m_Velocity[0]);
+    MatrixJDot[0, 1] = 2 * (m_p1->m_Velocity[1] - m_p2->m_Velocity[1]);
+    MatrixJDot[0, 2] = 2 * (m_p1->m_Velocity[0] - m_p2->m_Velocity[0]);
+    MatrixJDot[0, 3] = 2 * (m_p1->m_Velocity[1] - m_p2->m_Velocity[1]);
+    return MatrixJDot;
 }
 
 /**
  * Force factor
  * @return
  */
-std::vector<Vec2f> RodConstraint::getQ() {
-    std::vector<Vec2f> Q;
-    Q.push_back(m_p1->force);
-    Q.push_back(m_p2->force);
-    return Q;
+mat RodConstraint::getQ() {
+    mat MatrixQ(4, 1, fill::zeros);
+    MatrixQ[0, 0] = m_p1->force[0];
+    MatrixQ[1, 0] = m_p1->force[1];
+    MatrixQ[2, 0] = m_p2->force[0];
+    MatrixQ[3, 0] = m_p2->force[1];
+    return MatrixQ;
 }

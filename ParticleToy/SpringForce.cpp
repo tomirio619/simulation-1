@@ -14,7 +14,7 @@ Vec2f SpringForce::computeForce(Particle *p) {
     float l_bars = sqrt(l * l);
 
     Vec2f l_dot = this->m_p1->m_Velocity - this->m_p2->m_Velocity;
-    
+
     Vec2f fp1 = (m_ks * (l_bars - this->m_dist) + m_kd * (l_dot * l)/l_bars) * (l/l_bars);
     m_p1->force -= fp1;
     m_p2->force += fp1;

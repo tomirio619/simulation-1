@@ -7,14 +7,11 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # Set Compile and Linker flags
 
-set(GCC_COVERAGE_COMPILE_FLAGS "-lfreeglut_static -lopengl32 -static-libgcc -lwinmm -lgdi32 -Wl,--subsystem,windows")
+set(GCC_COVERAGE_COMPILE_FLAGS "-lfreeglut_static -lopengl32 -static-libgcc -lwinmm -lgdi32 -Wl,--subsystem,windows -lblas_win64_MT -llapack_win64_MT")
 SET(GCC_COVERAGE_LINK_FLAGS    "-D FREEGLUT_STATIC")
 
 set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
-
-
-
 
 set(SOURCE_FILES
         ParticleToy/CircularWireConstraint.cpp
@@ -41,18 +38,20 @@ set(SOURCE_FILES
         ParticleToy/RK4.h
         ParticleToy/Midpoint.cpp
         ParticleToy/Midpoint.h
+        ParticleToy/LambdaSolver.cpp
+        ParticleToy/LambdaSolver.h
         )
 
 find_package (OpenGL REQUIRED)
 #find_package (GLUT REQUIRED)
 
-link_directories(ParticleToy/lib/freeglut)
+link_directories(ParticleToy/lib/freeglut ParticleToy/lib/lib_win64)
 
-include_directories(${OPENGL_INCLUDE_DIR} ParticleToy/include ParticleToy/lib/SparseMatrix)
+include_directories(${OPENGL_INCLUDE_DIR} ParticleToy/include ParticleToy/include/arma/)
 
 add_executable(simulation_1 ${SOURCE_FILES})
 
-target_link_libraries(simulation_1 ${OPENGL_LIBRARIES} freeglut)
+target_link_libraries(simulation_1 ${OPENGL_LIBRARIES} freeglut LAPACK BLAS)
 
 MESSAGE( STATUS "CMAKE_CURRENT_SOURCE_DIR: " ${CMAKE_CURRENT_SOURCE_DIR} )
 
