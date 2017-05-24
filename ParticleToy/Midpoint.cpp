@@ -13,7 +13,7 @@ namespace Midpoint {
 
     void
     evaluate(std::vector<Particle *> particles, std::vector<Force *> forces, std::vector<ConstraintForce *> constraints,
-             double dt) {
+             float dt) {
         unsigned i = 0;
         // Clear previous positions
         orgPositions.clear();
@@ -43,7 +43,7 @@ namespace Midpoint {
         // Final evaluation
         for (auto &particle: particles) {
             particle->m_Velocity += particle->force * dt / 2.0f;
-            particle->m_Position = orgPositions[i++] +  particle->m_Velocity * dt;
+            particle->m_Position = orgPositions[i++] + particle->m_Velocity * dt;
         }
 
     }

@@ -7,8 +7,8 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # Set Compile and Linker flags
 
-set(GCC_COVERAGE_COMPILE_FLAGS "-lfreeglut_static -lopengl32 -static-libgcc -lwinmm -lgdi32 -Wl,--subsystem,windows")
-SET(GCC_COVERAGE_LINK_FLAGS    "-D FREEGLUT_STATIC")
+set(GCC_COVERAGE_COMPILE_FLAGS "-lfreeglut -lopengl32 -static-libgcc -lwinmm -lgdi32 -Wl,--subsystem,windows")
+set(GCC_COVERAGE_LINK_FLAGS    "-D FREEGLUT_STATIC")
 
 set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")

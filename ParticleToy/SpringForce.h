@@ -7,11 +7,11 @@ class SpringForce : public Force {
 public:
     SpringForce(Particle *p1, Particle *p2, double dist, double ks, double kd);
 
-
-
     void draw();
 
     void computeForce() override;
+
+    void drawForce() override;
 
 private:
 

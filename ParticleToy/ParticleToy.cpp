@@ -17,7 +17,13 @@
 /* macros */
 
 /* external definitions (from solver) */
+<<<<<<< HEAD
 extern void simulation_step(std::vector<Particle *> particle, std::vector<Force *> forces, std::vector<ConstraintForce *> constraints, float dt);
+=======
+extern void simulation_step(std::vector<Force *> forces, std::vector<Particle *> particles,
+                            float dt);
+
+>>>>>>> Fixed mouse interaction with user. However, this push introduced an "undefined reference to"
 
 /* global variables */
 
@@ -26,9 +32,17 @@ static float dt, d;
 static int dsim;
 static int dump_frames;
 static int frame_number;
+float proximity_threshold = 0.05f;
+
+/* Mouse dragging variables */
+
+static Vec2f mouseDragOrgPos;
+static Vec2f mouseDragNewPos;
+static bool isDragging = false;
 
 // static Particle *pList;
 static std::vector<Particle *> pVector;
+static std::vector<ConstraintForce *> constraintForces;
 
 std::vector<Force *> forceVector;
 std::vector<ConstraintForce *> constraintForces;
@@ -105,12 +119,11 @@ static void init_system(void) {
     const Vec2f center(0.0, 0.0);
     const Vec2f offset(dist, 0.0);
 
-    std::cerr << "Hallo" << std::endl;
-
     // Create three particles, attach them to each other, then add a
     // circular wire constraint to the first.
 
     double particleMass = 1.0f;
+
 
 //    pVector.push_back(new Particle(center + offset, particleMass));
 //    pVector.push_back(new Particle(center + offset + offset, particleMass));
@@ -153,6 +166,7 @@ static void init_system(void) {
 //    constraintForces.push_back(rodConstraint2);
 
     createCloth(4, 4);
+
 }
 
 /*
@@ -160,6 +174,118 @@ static void init_system(void) {
 OpenGL specific drawing routines
 ----------------------------------------------------------------------
 */
+float euclideanDistance(Vec2f a, Vec2f b) {
+    return sqrtf(powf(a[0] - b[0], 2) + powf(a[1] - b[1], 2));
+}
+
+bool isWithinProximity(Vec2f a, Vec2f b, float threshold) {
+    float dist = euclideanDistance(a, b);
+    return dist <= threshold;
+}
+
+/**
+ * Checks whether a given vector is not within a threshold of other particles
+ * @param particles
+ * @param p
+ * @param threshold
+ * @return
+ */
+bool noCloseParticles(std::vector<Particle *> particles, Vec2f v, float threshold) {
+    for (auto &particle: particles) {
+        float px = particle->m_Position[0];
+        float py = particle->m_Position[1];
+        if (isWithinProximity(v, particle->m_Position, threshold)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * See https://gamedev.stackexchange.com/questions/32555/how-do-i-convert-between-two-different-2d-coordinate-systems
+ * @param value The value to normalize
+ * @param min The min value
+ * @param max The max value
+ * @return
+ */
+float normalize(float value, float min, float max) {
+    return fabsf((value - min) / (max - min));
+}
+
+/**
+ * Transforms x and y coordinates retrieved from a mouse click to the coordinate system used to draw points on the
+ * screen.
+ * @param x The x value of the mouse
+ * @param y  The y value of the mouse
+ * @return  Vec2f of transformed coordinates
+ */
+Vec2f getTransformedCoordinates(int x, int y) {
+    float max = 1.0f;
+    float min = -1.0f;
+    float windowWidth = glutGet(GLUT_WINDOW_WIDTH);
+    float windowHeight = glutGet(GLUT_WINDOW_HEIGHT);
+    // Normalize the x and y coordinates that indicate the mouse position
+    float xPercent = normalize(x, 0, windowWidth);
+    float yPercent = normalize(y, 0, windowHeight);
+    // Compute values in the new coordinate system
+    float destX = xPercent * fabsf(max - min) + min;
+    float destY = yPercent * fabsf(max - min) + min;
+    destY *= -1;
+    return Vec2f(destX, destY);
+}
+
+/**
+ * Function for handling mouse input.
+ * Note that the glut coordinate system is a little bit weird : it corresponds to the coordinate system you are
+ * taught in high school.
+ * @param button The button
+ * @param state The state
+ * @param x The x coordinate of the mouse button
+ * @param y The y coordinate of the mouse button
+ */
+void onMouseButton(int button, int state, int x, int y) {
+    // TODO make sure we detect end of mouse drag
+    int glutUp = GLUT_UP;
+    int glutDown = GLUT_DOWN;
+    int glutLeftButton = GLUT_LEFT_BUTTON;
+    Vec2f normalizedMouse = getTransformedCoordinates(x, y);
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
+        if (!isDragging) {
+            // Left button is released and we were not dragging the mouse
+            bool collides = false;
+            if (noCloseParticles(pVector, normalizedMouse, proximity_threshold)) {
+                pVector.push_back(new Particle(normalizedMouse, 1));
+            }
+        } else {
+            // We finished a mouse drag, so we have to check whether we can place particles on both end points
+            mouseDragNewPos = normalizedMouse;
+            if (noCloseParticles(pVector, mouseDragOrgPos, proximity_threshold) &&
+                noCloseParticles(pVector, mouseDragNewPos, proximity_threshold)) {
+                Particle *p1 = new Particle(mouseDragOrgPos, 1);
+                Particle *p2 = new Particle(mouseDragNewPos, 1);
+                forceVector.push_back(new SpringForce(p1, p2, 0.2f, 0.2f, 0.2f));
+                pVector.push_back(p1);
+                pVector.push_back(p2);
+                isDragging = false;
+            }
+        }
+    }
+}
+
+/**
+ * https://www.opengl.org/discussion_boards/showthread.php/174097-dragging-using-mouse-movement
+ * @param x
+ * @param y
+ */
+void onMouseDrag(int x, int y) {
+    Vec2f curPos = getTransformedCoordinates(x, y);
+    if (!isDragging) {
+        isDragging = true;
+        mouseDragOrgPos = curPos;
+    } else {
+        mouseDragNewPos = curPos;
+    }
+}
 
 static void pre_display(void) {
     glViewport(0, 0, win_x, win_y);
@@ -168,6 +294,9 @@ static void pre_display(void) {
     gluOrtho2D(-1.0, 1.0, -1.0, 1.0);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+    // Register mouse callback function for both clicking and dragging
+    glutMouseFunc(onMouseButton);
+    glutMotionFunc(onMouseDrag);
 }
 
 static void post_display(void) {
@@ -208,6 +337,10 @@ static void draw_particles(void) {
 static void draw_constraints(void) {
     for (auto &constraint : constraintForces) {
         constraint->draw();
+
+static void draw_forces(void) {
+    for (auto &force: forceVector) {
+        force->drawForce();
     }
 }
 
@@ -320,7 +453,11 @@ static void reshape_func(int width, int height) {
 }
 
 static void idle_func(void) {
+<<<<<<< HEAD
     if (dsim) simulation_step(pVector, forceVector, constraintForces,dt);
+=======
+    if (dsim) simulation_step(forceVector, pVector, dt);
+>>>>>>> Fixed mouse interaction with user. However, this push introduced an "undefined reference to"
     else {
         get_from_UI();
         remap_GUI();

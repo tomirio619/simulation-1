@@ -15,9 +15,10 @@ using Eigen::VectorXd;
 class LambdaSolver {
 
 public:
-
     static MatrixXd solveLambda(MatrixXd J, MatrixXd W, MatrixXd Jdot, VectorXd qDot, VectorXd Q);
     static void solve(std::vector<Particle *> particles, std::vector<ConstraintForce *> constraints, float ks, float kd );
+
+private:
 
 };
 

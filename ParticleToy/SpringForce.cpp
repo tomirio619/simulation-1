@@ -10,18 +10,22 @@ SpringForce::SpringForce(Particle *p1, Particle *p2, double dist, double ks, dou
 
 void SpringForce::computeForce() {
     Vec2f l = this->m_p1->m_Position - this->m_p2->m_Position;
-    float l_bars = sqrt(l * l);
+    float l_bars = sqrtf(l * l);
 
     Vec2f l_dot = this->m_p1->m_Velocity - this->m_p2->m_Velocity;
 
-    Vec2f fp1 = (m_ks * (l_bars - this->m_dist) + m_kd * (l_dot * l)/l_bars) * (l/l_bars);
+    Vec2f fp1 = (m_ks * (l_bars - this->m_dist) + m_kd * (l_dot * l) / l_bars) * (l / l_bars);
     m_p1->force -= fp1;
     m_p2->force += fp1;
 }
 
+<<<<<<< HEAD
 
 
 void SpringForce::draw() {
+=======
+void SpringForce::drawForce() {
+>>>>>>> Fixed mouse interaction with user. However, this push introduced an "undefined reference to"
     glBegin(GL_LINES);
     glColor3f(0.6, 0.7, 0.8);
     glVertex2f(m_p1->m_Position[0], m_p1->m_Position[1]);
@@ -29,3 +33,4 @@ void SpringForce::draw() {
     glVertex2f(m_p2->m_Position[0], m_p2->m_Position[1]);
     glEnd();
 }
+

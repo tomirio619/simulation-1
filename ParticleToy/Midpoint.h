@@ -17,5 +17,5 @@ namespace Midpoint {
 
     void
     evaluate(std::vector<Particle *> particles, std::vector<Force *> forces, std::vector<ConstraintForce *> constraints,
-             double dt);
+             float dt);
 }

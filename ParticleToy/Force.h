@@ -18,10 +18,12 @@ public:
     //Compute the force
     virtual void computeForce();
 
+    virtual void drawForce();
+
     static void clearForces(std::vector<Particle *> particles);
 
     std::vector<Particle *> particles;
-    double gravitationalConstant;
+    float gravitationalConstant;
 
     virtual void draw();
 

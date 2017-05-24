@@ -13,7 +13,7 @@ namespace RK4 {
 
     void
     evaluate(std::vector<Particle *> particles, std::vector<Force *> forces, std::vector<ConstraintForce> constraints,
-             double dt) {
+             float dt) {
         Force::clearForces(particles);
         // Apply forces
         // Remove the previously saved positions
