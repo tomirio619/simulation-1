@@ -4,10 +4,12 @@
 
 #include "LambdaSolver.h"
 #include "Eigen/Dense"
+#include "linearSolver.h"
+#include "Eigen/IterativeLinearSolvers"
 
 using namespace std;
 using Eigen::MatrixXd;
-
+using Eigen::ConjugateGradient;
 
 /**
  * Compute the constraint force
@@ -31,5 +33,13 @@ MatrixXd LambdaSolver::solveLambda(MatrixXd J, MatrixXd W, MatrixXd Jdot, Matrix
 
     MatrixXd QHat = Lambda * J;
 
-    return QHat;
+    MatrixXd RHS = (-JdotQdot - JWQ);
+
+    ConjugateGradient<MatrixXd, Eigen::Lower|Eigen::Upper, Eigen::IdentityPreconditioner> cg;
+    cg.compute(JWJT);
+    MatrixXd dest(1, 4);
+    dest = cg.solve(RHS);
+    MatrixXd forces = dest * J.transpose();
+
+    return forces;
 }

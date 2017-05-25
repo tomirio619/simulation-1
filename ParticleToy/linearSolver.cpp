@@ -1,4 +1,7 @@
 #include "linearSolver.h"
+#include "Eigen/Dense"
+
+using Eigen::MatrixXd;
 
 // vector helper functions
 
