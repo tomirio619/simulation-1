@@ -4,6 +4,7 @@
 #include "Eigen/Dense"
 
 using Eigen::MatrixXd;
+using Eigen::VectorXd;
 
 RodConstraint::RodConstraint(Particle *p1, Particle *p2, double dist) :
         m_p1(p1), m_p2(p2), m_dist(dist) {
@@ -22,24 +23,20 @@ void RodConstraint::draw() {
 }
 
 Vec2f RodConstraint::computeForce(Particle *p) {
-    MatrixXd J = getJ();
-    MatrixXd W = getW();
-    MatrixXd JDot = getJDot();
-    MatrixXd qDot = getqDot();
-    MatrixXd Q = getQ();
-    MatrixXd QHat = LambdaSolver::solveLambda(J, getW(), getJDot(), getqDot(), getQ());
+    MatrixXd QHat = LambdaSolver::solveLambda(getJ(), getW(), getJDot(), getqDot(), getQ());
 
-    particles[0]->force += Vec2f(QHat(0, 0), QHat(0, 1));
-    particles[1]->force += Vec2f(QHat(0, 2), QHat(0, 3));
-
+    m_p1->force[0] += QHat(0, 0);
+    m_p1->force[1] += QHat(0, 1);
+    m_p2->force[0] += QHat(0, 2);
+    m_p2->force[1] += QHat(0, 3);
 }
 
-MatrixXd RodConstraint::getq() {
-    MatrixXd MatrixQ(1, 4);
-    MatrixQ(0, 0) = particles[0]->m_Position[0];
-    MatrixQ(0, 1) = particles[0]->m_Position[1];
-    MatrixQ(0, 2) = particles[1]->m_Position[0];
-    MatrixQ(0, 3) = particles[1]->m_Position[1];
+VectorXd RodConstraint::getq() {
+    VectorXd MatrixQ(4);
+    MatrixQ(0) = particles[0]->m_Position[0];
+    MatrixQ(1) = particles[0]->m_Position[1];
+    MatrixQ(2) = particles[1]->m_Position[0];
+    MatrixQ(3) = particles[1]->m_Position[1];
     return MatrixQ;
 }
 
@@ -77,12 +74,12 @@ MatrixXd RodConstraint::getW() {
  * Partial derivatives of the position values is the velocity
  * @return
  */
-MatrixXd RodConstraint::getqDot() {
-    MatrixXd MatrixQDot(1, 4);
-    MatrixQDot(0, 0) = particles[0]->m_Velocity[0];
-    MatrixQDot(0, 1) = particles[0]->m_Velocity[1];
-    MatrixQDot(0, 2) = particles[1]->m_Velocity[0];
-    MatrixQDot(0, 3) = particles[1]->m_Velocity[1];
+VectorXd RodConstraint::getqDot() {
+    VectorXd MatrixQDot(4);
+    MatrixQDot(0) = particles[0]->m_Velocity[0];
+    MatrixQDot(1) = particles[0]->m_Velocity[1];
+    MatrixQDot(2) = particles[1]->m_Velocity[0];
+    MatrixQDot(3) = particles[1]->m_Velocity[1];
     return MatrixQDot;
 }
 
@@ -99,11 +96,11 @@ MatrixXd RodConstraint::getJDot() {
  * Force factor
  * @return
  */
-MatrixXd RodConstraint::getQ() {
-    MatrixXd MatrixQ(1, 4);
-    MatrixQ(0, 0) = particles[0]->force[0];
-    MatrixQ(0, 1) = particles[0]->force[1];
-    MatrixQ(0, 2) = particles[1]->force[0];
-    MatrixQ(0, 3) = particles[1]->force[1];
+VectorXd RodConstraint::getQ() {
+    VectorXd MatrixQ(4);
+    MatrixQ(0) = particles[0]->force[0];
+    MatrixQ(1) = particles[0]->force[1];
+    MatrixQ(2) = particles[1]->force[0];
+    MatrixQ(3) = particles[1]->force[1];
     return MatrixQ;
 }

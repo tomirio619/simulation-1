@@ -5,6 +5,7 @@
 #include "Eigen/Dense"
 
 using Eigen::MatrixXd;
+using Eigen::VectorXd;
 
 class RodConstraint : public ConstraintForce {
 public:
@@ -14,7 +15,7 @@ public:
 
     void draw();
 
-    MatrixXd getq() override;
+    VectorXd getq() override;
 
     double getC() override;
 
@@ -24,9 +25,9 @@ public:
 
     MatrixXd getJDot() override;
 
-    MatrixXd getqDot() override;
+    VectorXd getqDot() override;
 
-    MatrixXd getQ() override;
+    VectorXd getQ() override;
 
 
 private:

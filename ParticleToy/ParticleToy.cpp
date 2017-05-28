@@ -347,9 +347,10 @@ main --- main routine
 int main(int argc, char **argv) {
     glutInit(&argc, argv);
 
+    fflush(stdout);
     if (argc == 1) {
         N = 64;
-        dt = 0.01f;
+        dt = 0.001f;
         d = 5.f;
 
         fprintf(stderr, "Using defaults : N=%d dt=%g d=%g\n",

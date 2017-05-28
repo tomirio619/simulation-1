@@ -10,6 +10,7 @@
 #include "Eigen/Dense"
 
 using Eigen::MatrixXd;
+using Eigen::VectorXd;
 
 class ConstraintForce : public Force {
 
@@ -18,12 +19,12 @@ public:
 
     virtual double getC();
     virtual Vec2f getCdot();
-    virtual MatrixXd getq(); //Get q, which is a vector of positions
+    virtual VectorXd getq(); //Get q, which is a vector of positions
     virtual MatrixXd getJ(); //Get J, which is the partial derivative vector
     virtual MatrixXd getW();
     virtual MatrixXd getJDot();
-    virtual MatrixXd getqDot();
-    virtual MatrixXd getQ();
+    virtual VectorXd getqDot();
+    virtual VectorXd getQ();
 
     Vec2f computeForce(Particle *p) override;
 

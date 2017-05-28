@@ -6,6 +6,7 @@
 #include "Eigen/Dense"
 
 using Eigen::MatrixXd;
+using Eigen::VectorXd;
 
 ConstraintForce::ConstraintForce() {}
 
@@ -13,17 +14,17 @@ Vec2f ConstraintForce::computeForce(Particle *p) {
     return Force::computeForce(p);
 }
 
-MatrixXd ConstraintForce::getQ() {
+VectorXd ConstraintForce::getQ() {
     MatrixXd matrix(1,1);
     return matrix;
 }
 
-MatrixXd ConstraintForce::getqDot() {
+VectorXd ConstraintForce::getqDot() {
     MatrixXd matrix(1,1);
     return matrix;
 }
 
-MatrixXd ConstraintForce::getq() {
+VectorXd ConstraintForce::getq() {
     MatrixXd matrix(1,1);
     return matrix;
 }

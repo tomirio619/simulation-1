@@ -9,12 +9,14 @@
 #include "Eigen/Dense"
 
 using Eigen::MatrixXd;
+using Eigen::VectorXd;
 
 class LambdaSolver {
 
 public:
 
-    static MatrixXd solveLambda(MatrixXd J, MatrixXd W, MatrixXd Jdot, MatrixXd qDot, MatrixXd Q);
+    static MatrixXd solveLambda(MatrixXd J, MatrixXd W, MatrixXd Jdot, VectorXd qDot, VectorXd Q);
+
 };
 
 
