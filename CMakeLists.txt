@@ -40,7 +40,7 @@ set(SOURCE_FILES
         ParticleToy/Midpoint.h
         ParticleToy/LambdaSolver.cpp
         ParticleToy/LambdaSolver.h
-        )
+        ParticleToy/SlidingWireConstraint.cpp ParticleToy/SlidingWireConstraint.h)
 
 find_package (OpenGL REQUIRED)
 #find_package (GLUT REQUIRED)

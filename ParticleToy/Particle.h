@@ -13,9 +13,14 @@ public:
 
     void draw();
 
+    int row; //Used to know which row to place the particle in the J matrix
     Vec2f m_ConstructPos;
     Vec2f m_Position;
     Vec2f m_Velocity;
     Vec2f force;
     double mass;
+
+    void drawForce();
+
+    void drawVelocity();
 };

@@ -6,7 +6,36 @@
 #define SIMULATION_1_SLIDINGWIRECONSTRAINT_H
 
 
-class SlidingWireConstraint {
+#include "ConstraintForce.h"
+
+class SlidingWireConstraint : public ConstraintForce{
+
+public:
+    SlidingWireConstraint();
+
+    SlidingWireConstraint(Particle *p1, double height);
+
+    double getC() override;
+
+    double getCdot() override;
+
+    VectorXd getq() override;
+
+    MatrixXd getJ() override;
+
+    MatrixXd getW() override;
+
+    MatrixXd getJDot() override;
+
+    VectorXd getqDot() override;
+
+    VectorXd getQ() override;
+
+    void draw() override;
+
+private:
+    double height;
+    Particle * p1;
 
 };
 

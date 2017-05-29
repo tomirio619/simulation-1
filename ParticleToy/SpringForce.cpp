@@ -20,6 +20,7 @@ void SpringForce::computeForce() {
 }
 
 
+
 void SpringForce::draw() {
     glBegin(GL_LINES);
     glColor3f(0.6, 0.7, 0.8);

@@ -15,3 +15,7 @@ void Force::clearForces(std::vector<Particle *> particles) {
         particle->force = Vec2f(0, 0);
     }
 }
+
+void Force::draw() {
+    return;
+}

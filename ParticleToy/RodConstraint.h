@@ -29,6 +29,8 @@ public:
 
     VectorXd getQ() override;
 
+    double getCdot() override;
+
 
 private:
 

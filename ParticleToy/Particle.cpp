@@ -18,10 +18,25 @@ void Particle::draw() {
     const double h = 0.03;
     glColor3f(1.f, 1.f, 1.f);
     glBegin(GL_QUADS);
-    printf("Hallo\n");
     glVertex2f(m_Position[0] - h / 2.0, m_Position[1] - h / 2.0);
     glVertex2f(m_Position[0] + h / 2.0, m_Position[1] - h / 2.0);
     glVertex2f(m_Position[0] + h / 2.0, m_Position[1] + h / 2.0);
     glVertex2f(m_Position[0] - h / 2.0, m_Position[1] + h / 2.0);
+    glEnd();
+}
+
+void Particle::drawForce(){
+    glColor3f(0.000, 0.000, 1.000);
+    glBegin(GL_LINES);
+    glVertex2f(m_Position[0], m_Position[1]);
+    glVertex2f(m_Position[0] + force[0] * 10, m_Position[1] + force[1] * 10);
+    glEnd();
+}
+
+void Particle::drawVelocity(){
+    glColor3f(0.000, 1.000, 0.000);
+    glBegin(GL_LINES);
+    glVertex2f(m_Position[0], m_Position[1]);
+    glVertex2f(m_Position[0] + m_Velocity[0], m_Position[1] + m_Velocity[1]);
     glEnd();
 }

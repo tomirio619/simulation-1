@@ -41,7 +41,17 @@ VectorXd RodConstraint::getq() {
 }
 
 double RodConstraint::getC() {
-    return pow((particles[0]->m_Position[0] - particles[1]->m_Position[0]), 2.0) + pow( (particles[0]->m_Position[0] - particles[1]->m_Position[1]), 2.0 ) - pow(m_dist, 2.0);
+    return (particles[0]->m_Position - particles[1]->m_Position) * (particles[0]->m_Position - particles[1]->m_Position) -
+            m_dist * m_dist;
+}
+
+/**
+ * C * qdot
+ * @return
+ */
+double RodConstraint::getCdot() {
+    return ( (particles[0]->m_Position - particles[1]->m_Position)) *
+            (  (particles[0]->m_Velocity - particles[1]->m_Velocity) );
 }
 
 /**
@@ -93,7 +103,7 @@ MatrixXd RodConstraint::getJDot() {
 }
 
 /**
- * Force factor
+ * Force vector
  * @return
  */
 VectorXd RodConstraint::getQ() {

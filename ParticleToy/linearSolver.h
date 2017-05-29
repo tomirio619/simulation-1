@@ -5,10 +5,14 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include "Eigen/Dense"
 
 // Karen's CGD
 
 #define MAX_STEPS 100
+
+using Eigen::VectorXd;
+using Eigen::MatrixXd;
 
 // Matrix class the solver will accept
 class implicitMatrix {
@@ -34,6 +38,10 @@ public:
 // Upon completion, "steps" contains the number of iterations taken
 double ConjGrad(int n, implicitMatrix *A, double x[], double b[],
                 double epsilon,    // how low should we go?
+                int *steps);
+
+VectorXd ConjGrad(int n, MatrixXd A, VectorXd x, VectorXd b,
+                  double epsilon,    // how low should we go?
                 int *steps);
 
 // Some vector helper functions

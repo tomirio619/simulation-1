@@ -1,12 +1,29 @@
 #pragma once
 
 #include "Particle.h"
+#include "ConstraintForce.h"
 
-class CircularWireConstraint {
+class CircularWireConstraint : public ConstraintForce {
 public:
     CircularWireConstraint(Particle *p, const Vec2f &center, const double radius);
 
     void draw();
+
+    double getC() override;
+
+    double getCdot() override;
+
+    VectorXd getq() override;
+
+    MatrixXd getJ() override;
+
+    MatrixXd getW() override;
+
+    MatrixXd getJDot() override;
+
+    VectorXd getqDot() override;
+
+    VectorXd getQ() override;
 
 private:
 

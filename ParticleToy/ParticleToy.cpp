@@ -7,6 +7,7 @@
 #include "CircularWireConstraint.h"
 #include "Force.h"
 #include "GravityForce.h"
+#include "SlidingWireConstraint.h"
 
 #include <vector>
 #include <stdlib.h>
@@ -75,6 +76,30 @@ static void clear_data(void) {
     }
 }
 
+void createCloth(double width, double height){
+    Vec2f center = Vec2f(0, 0);
+    double spacing = 0.2;
+
+    for (int i = 0; i < height; ++i) {
+        for (int j = 0; j < width; ++j) {
+            Particle* p = new Particle(Vec2f(center[0] + j * spacing, center[1] + i * spacing), 1.0f);
+            pVector.push_back(p);
+            if (i == 0){
+                constraintForces.push_back(new SlidingWireConstraint(p, 0.4));
+            }
+
+            if (j > 0){
+                forceVector.push_back(new SpringForce(pVector[height * i + j], pVector[height * i + j -1], spacing, 1, 1));
+            }
+
+            if (i > 0){
+                forceVector.push_back(new SpringForce(pVector[height * i + j], pVector[height * i + j - width], spacing, 1, 1));
+            }
+        }
+    }
+
+}
+
 static void init_system(void) {
     const double dist = 0.2;
     const Vec2f center(0.0, 0.0);
@@ -86,40 +111,48 @@ static void init_system(void) {
     // circular wire constraint to the first.
 
     double particleMass = 1.0f;
-
-    pVector.push_back(new Particle(center + offset, particleMass));
-    pVector.push_back(new Particle(center + offset + offset, particleMass));
-    pVector.push_back(new Particle(center + offset + offset + offset, particleMass));
-
-    // You shoud replace these with a vector generalized forces and one of
-    // constraints...
-
-    std::vector<Particle *> gravityParticles;
-//    std::vector<ConstraintForce *> constraintForces;
-//    gravityParticles.push_back(pVector[0]);
-//    gravityParticles.push_back(pVector[1]);
-
-
-    double restLength = 0.5;
-    Force* springForce = new SpringForce(pVector[1], pVector[2], restLength, 0.1, 0.1);
-
-//    forceVector.push_back(gravityForce);
-//    forceVector.push_back(springForce);
-
-    Particle* centerParticle = new Particle(center, particleMass);
-    Particle* bottomParticle = new Particle(Vec2f(0.0, -0.2), particleMass);
-
-    pVector.push_back(centerParticle);
-    pVector.push_back(bottomParticle);
-
-    ConstraintForce* rodConstraintForce = new RodConstraint(centerParticle, bottomParticle, dist);
+//
+//    pVector.push_back(new Particle(center + offset, particleMass));
+//    pVector.push_back(new Particle(center + offset + offset, particleMass));
+//    pVector.push_back(new Particle(center + offset + offset + offset, particleMass));
+//
+//    // You shoud replace these with a vector generalized forces and one of
+//    // constraints...
+//
+//    std::vector<Particle *> gravityParticles;
+////    std::vector<ConstraintForce *> constraintForces;
+////    gravityParticles.push_back(pVector[0]);
+////    gravityParticles.push_back(pVector[1]);
+//
+//
+//    double restLength = 0.5;
+//    Force* springForce = new SpringForce(pVector[1], pVector[2], restLength, 0.1, 0.1);
+//
+////    forceVector.push_back(gravityForce);
+////    forceVector.push_back(springForce);
+//
+//    Particle* centerParticle = new Particle(center, particleMass);
+//    Particle* bottomParticle = new Particle(Vec2f(0.2, 0.0), particleMass);
+//
+//    pVector.push_back(centerParticle);
+//    pVector.push_back(bottomParticle);
+//
+//    ConstraintForce* rodConstraintForce = new RodConstraint(bottomParticle, pVector[1], dist);
 //    constraintForces.push_back(rodConstraintForce);
+//
+//    gravityParticles.push_back(bottomParticle);
+//    Force* gravityForce = new GravityForce(gravityParticles);
+//    forceVector.push_back(gravityForce);
+//
+//    ConstraintForce* circularWire = new CircularWireConstraint(bottomParticle, center, dist);
+//    constraintForces.push_back(circularWire);
+//
+//    ConstraintForce* slidingWire = new SlidingWireConstraint(pVector[2], 0.4);
+//    ConstraintForce* rodConstraint2 = new RodConstraint(pVector[1], pVector[2], 0.2);
+//    constraintForces.push_back(slidingWire);
+//    constraintForces.push_back(rodConstraint2);
 
-    gravityParticles.push_back(bottomParticle);
-    Force* gravityForce = new GravityForce(gravityParticles);
-    forceVector.push_back(gravityForce);
-
-    delete_this_dummy_wire = new CircularWireConstraint(pVector[0], center, dist);
+    createCloth(2, 4);
 }
 
 /*
@@ -167,21 +200,22 @@ static void draw_particles(void) {
 
     for (int ii = 0; ii < size; ii++) {
         pVector[ii]->draw();
+        pVector[ii]->drawForce();
+        pVector[ii]->drawVelocity();
     }
 }
 
-static void draw_forces(void) {
-    // change this to iteration over full set
-    if (delete_this_dummy_spring)
-        delete_this_dummy_spring->draw();
+static void draw_constraints(void) {
+    for (auto &constraint : constraintForces) {
+        constraint->draw();
+    }
 }
 
-static void draw_constraints(void) {
-    // change this to iteration over full set
-    if (delete_this_dummy_rod)
-        delete_this_dummy_rod->draw();
-    if (delete_this_dummy_wire)
-        delete_this_dummy_wire->draw();
+static void draw_forces(void){
+    for (auto &force : forceVector){
+        force->draw();
+    }
+
 }
 
 /*

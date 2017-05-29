@@ -19,6 +19,7 @@ void ForwardEuler::evaluate(std::vector<Particle *> particles, std::vector<Force
     }
 
     //Constraints
+    LambdaSolver::solve(particles, constraints, 60, 5);
 
     // Apply changes in velocity
     for (auto &particle: particles) {

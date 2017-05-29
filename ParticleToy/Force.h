@@ -23,6 +23,8 @@ public:
     std::vector<Particle *> particles;
     double gravitationalConstant;
 
+    virtual void draw();
+
 };
 
 

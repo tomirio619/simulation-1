@@ -40,11 +40,15 @@ MatrixXd ConstraintForce::getW() {
     return matrix;
 }
 
-Vec2f ConstraintForce::getCdot() {
+double ConstraintForce::getCdot() {
     return {0};
 }
 
 double ConstraintForce::getC() {
     return 0.0;
+}
+
+void ConstraintForce::draw() {
+    return;
 }
 
