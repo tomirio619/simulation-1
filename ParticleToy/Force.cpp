@@ -6,8 +6,8 @@
 
 Force::Force() {}
 
-Vec2f Force::computeForce(Particle *p) {
-    return 0;
+void Force::computeForce() {
+    return;
 }
 
 void Force::clearForces(std::vector<Particle *> particles) {

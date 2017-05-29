@@ -15,7 +15,7 @@ public:
 
     GravityForce();
 
-    Vec2f computeForce(Particle* p) override;
+    void computeForce() override;
 };
 
 

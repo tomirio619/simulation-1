@@ -16,7 +16,7 @@
 /* macros */
 
 /* external definitions (from solver) */
-extern void simulation_step(std::vector<Force *> forces, float dt);
+extern void simulation_step(std::vector<Particle *> particle, std::vector<Force *> forces, std::vector<ConstraintForce *> constraints, float dt);
 
 /* global variables */
 
@@ -30,6 +30,7 @@ static int frame_number;
 static std::vector<Particle *> pVector;
 
 std::vector<Force *> forceVector;
+std::vector<ConstraintForce *> constraintForces;
 
 static int win_id;
 static int win_x, win_y;
@@ -94,6 +95,7 @@ static void init_system(void) {
     // constraints...
 
     std::vector<Particle *> gravityParticles;
+//    std::vector<ConstraintForce *> constraintForces;
 //    gravityParticles.push_back(pVector[0]);
 //    gravityParticles.push_back(pVector[1]);
 
@@ -110,8 +112,8 @@ static void init_system(void) {
     pVector.push_back(centerParticle);
     pVector.push_back(bottomParticle);
 
-    Force* rodConstraintForce = new RodConstraint(centerParticle, bottomParticle, dist);
-    forceVector.push_back(rodConstraintForce);
+    ConstraintForce* rodConstraintForce = new RodConstraint(centerParticle, bottomParticle, dist);
+//    constraintForces.push_back(rodConstraintForce);
 
     gravityParticles.push_back(bottomParticle);
     Force* gravityForce = new GravityForce(gravityParticles);
@@ -284,7 +286,7 @@ static void reshape_func(int width, int height) {
 }
 
 static void idle_func(void) {
-    if (dsim) simulation_step(forceVector, dt);
+    if (dsim) simulation_step(pVector, forceVector, constraintForces,dt);
     else {
         get_from_UI();
         remap_GUI();

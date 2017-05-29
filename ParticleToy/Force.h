@@ -16,7 +16,7 @@ public:
     Force();
 
     //Compute the force
-    virtual Vec2f computeForce(Particle *p);
+    virtual void computeForce();
 
     static void clearForces(std::vector<Particle *> particles);
 

@@ -10,10 +10,6 @@ using Eigen::VectorXd;
 
 ConstraintForce::ConstraintForce() {}
 
-Vec2f ConstraintForce::computeForce(Particle *p) {
-    return Force::computeForce(p);
-}
-
 VectorXd ConstraintForce::getQ() {
     MatrixXd matrix(1,1);
     return matrix;
@@ -51,3 +47,4 @@ Vec2f ConstraintForce::getCdot() {
 double ConstraintForce::getC() {
     return 0.0;
 }
+

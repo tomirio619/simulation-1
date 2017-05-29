@@ -8,8 +8,7 @@ SpringForce::SpringForce(Particle *p1, Particle *p2, double dist, double ks, dou
 
 }
 
-Vec2f SpringForce::computeForce(Particle *p) {
-
+void SpringForce::computeForce() {
     Vec2f l = this->m_p1->m_Position - this->m_p2->m_Position;
     float l_bars = sqrt(l * l);
 
@@ -19,6 +18,7 @@ Vec2f SpringForce::computeForce(Particle *p) {
     m_p1->force -= fp1;
     m_p2->force += fp1;
 }
+
 
 void SpringForce::draw() {
     glBegin(GL_LINES);

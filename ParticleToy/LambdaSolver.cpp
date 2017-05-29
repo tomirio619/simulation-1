@@ -63,5 +63,6 @@ MatrixXd LambdaSolver::solveLambda(MatrixXd J, MatrixXd W, MatrixXd Jdot, Vector
 
     //Another attempt, try to rebuild the matrix
 
-
 }
+
+

@@ -26,8 +26,6 @@ public:
     virtual VectorXd getqDot();
     virtual VectorXd getQ();
 
-    Vec2f computeForce(Particle *p) override;
-
 };
 
 

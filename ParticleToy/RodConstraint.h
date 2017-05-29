@@ -11,7 +11,7 @@ class RodConstraint : public ConstraintForce {
 public:
     RodConstraint(Particle *p1, Particle *p2, double dist);
 
-    Vec2f computeForce(Particle *p) override;
+    Vec2f computeForce(Particle *p);
 
     void draw();
 

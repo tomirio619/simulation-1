@@ -15,7 +15,9 @@ GravityForce::GravityForce() :Force() {
 }
 
 
-Vec2f GravityForce::computeForce(Particle* p) {
-    return Vec2f(0, p->mass * this->gravitationalConstant);
+void GravityForce::computeForce() {
+    for ( auto &particle : particles  ) {
+        particle->force[1] += particle->mass * this->gravitationalConstant;
+    }
 }
 
