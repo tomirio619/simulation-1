@@ -7,13 +7,21 @@
 #include "CircularWireConstraint.h"
 #include "GravityForce.h"
 #include "SlidingWireConstraint.h"
+#include "HorizontalForce.h"
+#include "WallForce.h"
 
 #include <GL/glut.h>
+#include "string.h"
+#include "SetUp.h"
 
 /* macros */
 
 /* external definitions (from solver) */
-extern void simulation_step(std::vector<Particle *> particle, std::vector<Force *> forces, std::vector<ConstraintForce *> constraints, float dt);
+extern void simulation_step(std::vector<Particle *> particle, std::vector<Force *> forces, std::vector<ConstraintForce *> constraints, float dt, int isi);
+
+void createWall(double xPosition);
+
+void createCloth(int N);
 
 /* global variables */
 
@@ -29,6 +37,7 @@ float proximity_threshold = 0.05f;
 static Vec2f mouseDragOrgPos;
 static Vec2f mouseDragNewPos;
 static bool isDragging = false;
+static bool clothCreated = false;
 
 // static Particle *pList;
 static std::vector<Particle *> pVector;
@@ -43,6 +52,11 @@ static int mouse_release[3];
 static int mouse_shiftclick[3];
 static int omx, omy, mx, my;
 static int hmx, hmy;
+static int clothDimension = 4;
+static double particleMass = 1.0f;
+static Vec2f center = Vec2f(0.0, 0.0);
+static int integrationSchemeIndex = 0;
+static std::string integrationSchemeNames[] = {"Forward Euler", "Midpoint", "Runga Kutta 4"};
 
 static SpringForce *delete_this_dummy_spring = NULL;
 static RodConstraint *delete_this_dummy_rod = NULL;
@@ -57,18 +71,8 @@ free/clear/allocate simulation data
 
 static void free_data(void) {
     pVector.clear();
-    if (delete_this_dummy_rod) {
-        delete delete_this_dummy_rod;
-        delete_this_dummy_rod = NULL;
-    }
-    if (delete_this_dummy_spring) {
-        delete delete_this_dummy_spring;
-        delete_this_dummy_spring = NULL;
-    }
-    if (delete_this_dummy_wire) {
-        delete delete_this_dummy_wire;
-        delete_this_dummy_wire = NULL;
-    }
+    constraintForces.clear();
+    forceVector.clear();
 }
 
 static void clear_data(void) {
@@ -79,28 +83,53 @@ static void clear_data(void) {
     }
 }
 
-void createCloth(double width, double height){
-    assert(width == height);
-    Vec2f center = Vec2f(0, 0);
-    double spacing = 0.2;
+/**
+ * Handler for chaning menu options
+ * Only works when the simulation is in halt
+ * @param item
+ */
+void onMenuItemChanged(int item){
+    free_data();
+    clear_data();
 
-    for (int i = 0; i < height; ++i) {
-        for (int j = 0; j < width; ++j) {
-            Particle* p = new Particle(Vec2f(center[0] + j * spacing, center[1] - i * spacing), 1.0f);
-            pVector.push_back(p);
-            if (i == 0){
-                if (j == 0 || j == width-1)
-                    constraintForces.push_back(new SlidingWireConstraint(p, 0.4));
-            }
+    switch (item){
+        case 0:
+            SetUp::setUpSlidingCloth(pVector, forceVector, constraintForces, 4);
+            glutSetWindowTitle("4 by 4 cloth. Right mouse click to slide");
+            break;
+        case 1:
+            SetUp::setUpSlidingClothWall(pVector, forceVector, constraintForces, 4);
+            glutSetWindowTitle("4 by 4 cloth. Right mouse click to slide with a wall");
+            break;
+        case 2:
+            SetUp::setUpGravity(pVector, forceVector);
+            glutSetWindowTitle("Gravity");
+            break;
+        case 3:
+            SetUp::setUpSpringforce(pVector, forceVector);
+            glutSetWindowTitle("Spring force");
+            break;
+        case 4:
+            SetUp::setUpRodConstraint(pVector, forceVector, constraintForces);
+            glutSetWindowTitle("Rod constraint with gravity at bottom");
+            break;
+        case 5:
+            SetUp::setUpCircularConstraint(pVector, forceVector, constraintForces);
+            glutSetWindowTitle("Circular wire constraint with gravity");
+            break;
+        case 6:
+            SetUp::setUpHorizontalConstraint(pVector, forceVector, constraintForces);
+            glutSetWindowTitle("Sliding right over line constraint, with gravity");
+            break;
+        case 7:
+            SetUp::setUpMixedConstraint(pVector, forceVector, constraintForces);
+            glutSetWindowTitle("Mixture of several constraints");
+            break;
+        case 8:
+            SetUp::setUpAngularSpring(pVector, forceVector);
+            glutSetWindowTitle("Angular constraint");
+            break;
 
-            if (j > 0){
-                forceVector.push_back(new SpringForce(pVector[height * i + j], pVector[height * i + j -1], spacing, 1, 1));
-            }
-
-            if (i > 0){
-                forceVector.push_back(new SpringForce(pVector[height * i + j], pVector[height * i + j - width], spacing, 1, 1));
-            }
-        }
     }
 
 }
@@ -110,53 +139,10 @@ static void init_system(void) {
     const Vec2f center(0.0, 0.0);
     const Vec2f offset(dist, 0.0);
 
-    // Create three particles, attach them to each other, then add a
-    // circular wire constraint to the first.
-
     double particleMass = 1.0f;
 
-
-//    pVector.push_back(new Particle(center + offset, particleMass));
-//    pVector.push_back(new Particle(center + offset + offset, particleMass));
-//    pVector.push_back(new Particle(center + offset + offset + offset, particleMass));
-//
-//    // You shoud replace these with a vector generalized forces and one of
-//    // constraints...
-//
-//    std::vector<Particle *> gravityParticles;
-////    std::vector<ConstraintForce *> constraintForces;
-////    gravityParticles.push_back(pVector[0]);
-////    gravityParticles.push_back(pVector[1]);
-//
-//
-//    double restLength = 0.5;
-//    Force* springForce = new SpringForce(pVector[1], pVector[2], restLength, 0.1, 0.1);
-//
-////    forceVector.push_back(gravityForce);
-////    forceVector.push_back(springForce);
-//
-//    Particle* centerParticle = new Particle(center, particleMass);
-//    Particle* bottomParticle = new Particle(Vec2f(0.2, 0.0), particleMass);
-//
-//    pVector.push_back(centerParticle);
-//    pVector.push_back(bottomParticle);
-//
-//    ConstraintForce* rodConstraintForce = new RodConstraint(bottomParticle, pVector[1], dist);
-//    constraintForces.push_back(rodConstraintForce);
-//
-//    gravityParticles.push_back(bottomParticle);
-//    Force* gravityForce = new GravityForce(gravityParticles);
-//    forceVector.push_back(gravityForce);
-//
-//    ConstraintForce* circularWire = new CircularWireConstraint(bottomParticle, center, dist);
-//    constraintForces.push_back(circularWire);
-//
-//    ConstraintForce* slidingWire = new SlidingWireConstraint(pVector[2], 0.4);
-//    ConstraintForce* rodConstraint2 = new RodConstraint(pVector[1], pVector[2], 0.2);
-//    constraintForces.push_back(slidingWire);
-//    constraintForces.push_back(rodConstraint2);
-
-    createCloth(4, 4);
+    Particle* centerParticle = new Particle(center, particleMass);
+    pVector.push_back(centerParticle);
 
 }
 
@@ -191,6 +177,7 @@ bool noCloseParticles(std::vector<Particle *> particles, Vec2f v, float threshol
     }
     return true;
 }
+
 
 /**
  * See https://gamedev.stackexchange.com/questions/32555/how-do-i-convert-between-two-different-2d-coordinate-systems
@@ -236,6 +223,7 @@ Vec2f getTransformedCoordinates(int x, int y) {
  */
 void onMouseButton(int button, int state, int x, int y) {
     // TODO make sure we detect end of mouse drag
+    int right = GLUT_RIGHT_BUTTON;
     int glutUp = GLUT_UP;
     int glutDown = GLUT_DOWN;
     int glutLeftButton = GLUT_LEFT_BUTTON;
@@ -260,6 +248,21 @@ void onMouseButton(int button, int state, int x, int y) {
                 isDragging = false;
             }
         }
+    }
+
+    if (button == GLUT_RIGHT_BUTTON && state == GLUT_UP){
+        //On right mouse click, if there is a cloth we would like to apply a horizontal force on the cloth
+        if (clothCreated){
+            //If we have a cloth / are in cloth mode, apply the horizontal force on all the particles
+            //of the first row, such that we have a sliding effect
+            for (int i = 0; i < clothDimension; ++i) {
+                Force* horizontalForce = new HorizontalForce(pVector[i], 0.3f);
+                forceVector.push_back(horizontalForce);
+            }
+        }
+        //Get the particle which is close and apply the horizontal force on that particle
+        Force* horizontalForce = new HorizontalForce(pVector[0], 0.05f);
+        forceVector.push_back(horizontalForce);
     }
 }
 
@@ -392,6 +395,15 @@ GLUT callback routines
 
 static void key_func(unsigned char key, int x, int y) {
     switch (key) {
+        case '1':
+            integrationSchemeIndex = 0;
+            break;
+        case '2':
+            integrationSchemeIndex = 1;
+            break;
+        case '3':
+            integrationSchemeIndex = 2;
+            break;
         case 'c':
         case 'C':
             clear_data();
@@ -425,6 +437,7 @@ static void mouse_func(int button, int state, int x, int y) {
     if (mouse_down[button]) mouse_release[button] = state == GLUT_UP;
     if (mouse_down[button]) mouse_shiftclick[button] = glutGetModifiers() == GLUT_ACTIVE_SHIFT;
     mouse_down[button] = state == GLUT_DOWN;
+    std::cout << "Clicked" << std::endl;
 }
 
 static void motion_func(int x, int y) {
@@ -441,7 +454,7 @@ static void reshape_func(int width, int height) {
 }
 
 static void idle_func(void) {
-    if (dsim) simulation_step(pVector, forceVector, constraintForces,dt);
+    if (dsim) simulation_step(pVector, forceVector, constraintForces, dt, integrationSchemeIndex);
     else {
         get_from_UI();
         remap_GUI();
@@ -449,6 +462,22 @@ static void idle_func(void) {
 
     glutSetWindow(win_id);
     glutPostRedisplay();
+}
+
+void setUpMenu(){
+    glutCreateMenu(onMenuItemChanged);
+
+    glutAddMenuEntry("4 by 4 sliding cloth", 0);
+    glutAddMenuEntry("4 by 4 sliding cloth with wall", 1);
+    glutAddMenuEntry("Gravity", 2);
+    glutAddMenuEntry("Spring Force", 3);
+    glutAddMenuEntry("Rod constraint", 4);
+    glutAddMenuEntry("Circular wire", 5);
+    glutAddMenuEntry("Horizontal wire", 6);
+    glutAddMenuEntry("Rod + circular + horizontal", 7);
+    glutAddMenuEntry("Angular spring", 8);
+
+    glutAttachMenu(GLUT_MIDDLE_BUTTON);
 }
 
 static void display_func(void) {
@@ -483,6 +512,8 @@ static void open_glut_window(void) {
 
     glEnable(GL_LINE_SMOOTH);
     glEnable(GL_POLYGON_SMOOTH);
+
+    setUpMenu();
 
     pre_display();
 

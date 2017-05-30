@@ -4,6 +4,8 @@
 
 #include <vector>
 #include "Particle.h"
+#include "Force.h"
+#include "ConstraintForce.h"
 
 #ifndef SIMULATION_1_RUNGEKUTTAFOURTH_H
 #define SIMULATION_1_RUNGEKUTTAFOURTH_H
@@ -13,8 +15,11 @@
 // Therefore, we have to save them now so we can restore them later.
 // We also need to clear this vector before we evaluate.
 
-namespace RK4 {
-    std::vector<Vec2f> orgPositions;
-}
+class RK4 {
+public:
+    static void
+    evaluate(std::vector<Particle *> particles, std::vector<Force *> forces, std::vector<ConstraintForce* > constraints,
+             float dt);
+};
 
 #endif //SIMULATION_1_RUNGEKUTTAFOURTH_H

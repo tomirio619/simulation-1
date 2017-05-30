@@ -12,10 +12,8 @@
 #include "Force.h"
 #include "ConstraintForce.h"
 
-namespace Midpoint {
-    std::vector<Vec2f> orgPositions;
-
-    void
-    evaluate(std::vector<Particle *> particles, std::vector<Force *> forces, std::vector<ConstraintForce *> constraints,
+class Midpoint {
+public:
+    static void evaluate(std::vector<Particle *> particles, std::vector<Force *> forces, std::vector<ConstraintForce *> constraints,
              float dt);
-}
+};

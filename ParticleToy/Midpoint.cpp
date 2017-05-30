@@ -7,14 +7,13 @@
 #include "Force.h"
 #include "ConstraintForce.h"
 #include "Midpoint.h"
+#include "LambdaSolver.h"
 
-namespace Midpoint {
 
-
-    void
-    evaluate(std::vector<Particle *> particles, std::vector<Force *> forces, std::vector<ConstraintForce *> constraints,
+void Midpoint::evaluate(std::vector<Particle *> particles, std::vector<Force *> forces, std::vector<ConstraintForce *> constraints,
              float dt) {
         unsigned i = 0;
+        std::vector<Vec2f> orgPositions;
         // Clear previous positions
         orgPositions.clear();
         Force::clearForces(particles);
@@ -23,6 +22,9 @@ namespace Midpoint {
             orgPositions.push_back(particle->m_Position);
         }
         // Apply forces
+        for (auto &force: forces) {
+            force->computeForce();
+        }
 
         // Apply changes in velocity
         for (auto &particle: particles) {
@@ -38,7 +40,8 @@ namespace Midpoint {
         }
         // Apply forces
 
-        // TODO constraints
+        // Constraints
+        LambdaSolver::solve(particles, constraints, 60, 5);
 
         // Final evaluation
         for (auto &particle: particles) {
@@ -47,4 +50,3 @@ namespace Midpoint {
         }
 
     }
-}
