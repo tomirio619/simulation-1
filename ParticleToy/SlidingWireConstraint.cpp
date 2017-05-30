@@ -13,6 +13,10 @@ SlidingWireConstraint::SlidingWireConstraint(Particle* p1, double height) : Cons
 
 }
 
+/**
+ * The difference between the y coordinate of the particle and the height of the wire should be zero
+ * @return
+ */
 double SlidingWireConstraint::getC() {
     return (p1->m_Position[1] - height);
 }

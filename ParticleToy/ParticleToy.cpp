@@ -80,15 +80,17 @@ static void clear_data(void) {
 }
 
 void createCloth(double width, double height){
+    assert(width == height);
     Vec2f center = Vec2f(0, 0);
     double spacing = 0.2;
 
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
-            Particle* p = new Particle(Vec2f(center[0] + j * spacing, center[1] + i * spacing), 1.0f);
+            Particle* p = new Particle(Vec2f(center[0] + j * spacing, center[1] - i * spacing), 1.0f);
             pVector.push_back(p);
             if (i == 0){
-                constraintForces.push_back(new SlidingWireConstraint(p, 0.4));
+                if (j == 0 || j == width-1)
+                    constraintForces.push_back(new SlidingWireConstraint(p, 0.4));
             }
 
             if (j > 0){
@@ -114,47 +116,47 @@ static void init_system(void) {
     double particleMass = 1.0f;
 
 
-    pVector.push_back(new Particle(center + offset, particleMass));
-    pVector.push_back(new Particle(center + offset + offset, particleMass));
-    pVector.push_back(new Particle(center + offset + offset + offset, particleMass));
-
-    // You shoud replace these with a vector generalized forces and one of
-    // constraints...
-
-    std::vector<Particle *> gravityParticles;
-//    std::vector<ConstraintForce *> constraintForces;
-//    gravityParticles.push_back(pVector[0]);
-//    gravityParticles.push_back(pVector[1]);
-
-
-    double restLength = 0.5;
-    Force* springForce = new SpringForce(pVector[1], pVector[2], restLength, 0.1, 0.1);
-
+//    pVector.push_back(new Particle(center + offset, particleMass));
+//    pVector.push_back(new Particle(center + offset + offset, particleMass));
+//    pVector.push_back(new Particle(center + offset + offset + offset, particleMass));
+//
+//    // You shoud replace these with a vector generalized forces and one of
+//    // constraints...
+//
+//    std::vector<Particle *> gravityParticles;
+////    std::vector<ConstraintForce *> constraintForces;
+////    gravityParticles.push_back(pVector[0]);
+////    gravityParticles.push_back(pVector[1]);
+//
+//
+//    double restLength = 0.5;
+//    Force* springForce = new SpringForce(pVector[1], pVector[2], restLength, 0.1, 0.1);
+//
+////    forceVector.push_back(gravityForce);
+////    forceVector.push_back(springForce);
+//
+//    Particle* centerParticle = new Particle(center, particleMass);
+//    Particle* bottomParticle = new Particle(Vec2f(0.2, 0.0), particleMass);
+//
+//    pVector.push_back(centerParticle);
+//    pVector.push_back(bottomParticle);
+//
+//    ConstraintForce* rodConstraintForce = new RodConstraint(bottomParticle, pVector[1], dist);
+//    constraintForces.push_back(rodConstraintForce);
+//
+//    gravityParticles.push_back(bottomParticle);
+//    Force* gravityForce = new GravityForce(gravityParticles);
 //    forceVector.push_back(gravityForce);
-//    forceVector.push_back(springForce);
+//
+//    ConstraintForce* circularWire = new CircularWireConstraint(bottomParticle, center, dist);
+//    constraintForces.push_back(circularWire);
+//
+//    ConstraintForce* slidingWire = new SlidingWireConstraint(pVector[2], 0.4);
+//    ConstraintForce* rodConstraint2 = new RodConstraint(pVector[1], pVector[2], 0.2);
+//    constraintForces.push_back(slidingWire);
+//    constraintForces.push_back(rodConstraint2);
 
-    Particle* centerParticle = new Particle(center, particleMass);
-    Particle* bottomParticle = new Particle(Vec2f(0.2, 0.0), particleMass);
-
-    pVector.push_back(centerParticle);
-    pVector.push_back(bottomParticle);
-
-    ConstraintForce* rodConstraintForce = new RodConstraint(bottomParticle, pVector[1], dist);
-    constraintForces.push_back(rodConstraintForce);
-
-    gravityParticles.push_back(bottomParticle);
-    Force* gravityForce = new GravityForce(gravityParticles);
-    forceVector.push_back(gravityForce);
-
-    ConstraintForce* circularWire = new CircularWireConstraint(bottomParticle, center, dist);
-    constraintForces.push_back(circularWire);
-
-    ConstraintForce* slidingWire = new SlidingWireConstraint(pVector[2], 0.4);
-    ConstraintForce* rodConstraint2 = new RodConstraint(pVector[1], pVector[2], 0.2);
-    constraintForces.push_back(slidingWire);
-    constraintForces.push_back(rodConstraint2);
-
-//    createCloth(4, 4);
+    createCloth(4, 4);
 
 }
 
