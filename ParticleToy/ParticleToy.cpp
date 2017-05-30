@@ -111,7 +111,7 @@ static void init_system(void) {
     // circular wire constraint to the first.
 
     double particleMass = 1.0f;
-//
+
 //    pVector.push_back(new Particle(center + offset, particleMass));
 //    pVector.push_back(new Particle(center + offset + offset, particleMass));
 //    pVector.push_back(new Particle(center + offset + offset + offset, particleMass));
@@ -152,7 +152,7 @@ static void init_system(void) {
 //    constraintForces.push_back(slidingWire);
 //    constraintForces.push_back(rodConstraint2);
 
-    createCloth(2, 4);
+    createCloth(4, 4);
 }
 
 /*
