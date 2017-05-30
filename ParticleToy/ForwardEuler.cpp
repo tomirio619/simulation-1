@@ -17,7 +17,6 @@ void ForwardEuler::evaluate(std::vector<Particle *> particles, std::vector<Force
     for (auto &force: forces) {
         force->computeForce();
     }
-
     //Constraints
     LambdaSolver::solve(particles, constraints, 60, 5);
 
