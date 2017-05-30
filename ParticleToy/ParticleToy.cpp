@@ -13,13 +13,7 @@
 /* macros */
 
 /* external definitions (from solver) */
-<<<<<<< HEAD
 extern void simulation_step(std::vector<Particle *> particle, std::vector<Force *> forces, std::vector<ConstraintForce *> constraints, float dt);
-=======
-extern void simulation_step(std::vector<Force *> forces, std::vector<Particle *> particles,
-                            float dt);
-
->>>>>>> Fixed mouse interaction with user. However, this push introduced an "undefined reference to"
 
 /* global variables */
 
@@ -41,7 +35,6 @@ static std::vector<Particle *> pVector;
 static std::vector<ConstraintForce *> constraintForces;
 
 std::vector<Force *> forceVector;
-std::vector<ConstraintForce *> constraintForces;
 
 static int win_id;
 static int win_x, win_y;
@@ -121,47 +114,47 @@ static void init_system(void) {
     double particleMass = 1.0f;
 
 
-//    pVector.push_back(new Particle(center + offset, particleMass));
-//    pVector.push_back(new Particle(center + offset + offset, particleMass));
-//    pVector.push_back(new Particle(center + offset + offset + offset, particleMass));
-//
-//    // You shoud replace these with a vector generalized forces and one of
-//    // constraints...
-//
-//    std::vector<Particle *> gravityParticles;
-////    std::vector<ConstraintForce *> constraintForces;
-////    gravityParticles.push_back(pVector[0]);
-////    gravityParticles.push_back(pVector[1]);
-//
-//
-//    double restLength = 0.5;
-//    Force* springForce = new SpringForce(pVector[1], pVector[2], restLength, 0.1, 0.1);
-//
-////    forceVector.push_back(gravityForce);
-////    forceVector.push_back(springForce);
-//
-//    Particle* centerParticle = new Particle(center, particleMass);
-//    Particle* bottomParticle = new Particle(Vec2f(0.2, 0.0), particleMass);
-//
-//    pVector.push_back(centerParticle);
-//    pVector.push_back(bottomParticle);
-//
-//    ConstraintForce* rodConstraintForce = new RodConstraint(bottomParticle, pVector[1], dist);
-//    constraintForces.push_back(rodConstraintForce);
-//
-//    gravityParticles.push_back(bottomParticle);
-//    Force* gravityForce = new GravityForce(gravityParticles);
-//    forceVector.push_back(gravityForce);
-//
-//    ConstraintForce* circularWire = new CircularWireConstraint(bottomParticle, center, dist);
-//    constraintForces.push_back(circularWire);
-//
-//    ConstraintForce* slidingWire = new SlidingWireConstraint(pVector[2], 0.4);
-//    ConstraintForce* rodConstraint2 = new RodConstraint(pVector[1], pVector[2], 0.2);
-//    constraintForces.push_back(slidingWire);
-//    constraintForces.push_back(rodConstraint2);
+    pVector.push_back(new Particle(center + offset, particleMass));
+    pVector.push_back(new Particle(center + offset + offset, particleMass));
+    pVector.push_back(new Particle(center + offset + offset + offset, particleMass));
 
-    createCloth(4, 4);
+    // You shoud replace these with a vector generalized forces and one of
+    // constraints...
+
+    std::vector<Particle *> gravityParticles;
+//    std::vector<ConstraintForce *> constraintForces;
+//    gravityParticles.push_back(pVector[0]);
+//    gravityParticles.push_back(pVector[1]);
+
+
+    double restLength = 0.5;
+    Force* springForce = new SpringForce(pVector[1], pVector[2], restLength, 0.1, 0.1);
+
+//    forceVector.push_back(gravityForce);
+//    forceVector.push_back(springForce);
+
+    Particle* centerParticle = new Particle(center, particleMass);
+    Particle* bottomParticle = new Particle(Vec2f(0.2, 0.0), particleMass);
+
+    pVector.push_back(centerParticle);
+    pVector.push_back(bottomParticle);
+
+    ConstraintForce* rodConstraintForce = new RodConstraint(bottomParticle, pVector[1], dist);
+    constraintForces.push_back(rodConstraintForce);
+
+    gravityParticles.push_back(bottomParticle);
+    Force* gravityForce = new GravityForce(gravityParticles);
+    forceVector.push_back(gravityForce);
+
+    ConstraintForce* circularWire = new CircularWireConstraint(bottomParticle, center, dist);
+    constraintForces.push_back(circularWire);
+
+    ConstraintForce* slidingWire = new SlidingWireConstraint(pVector[2], 0.4);
+    ConstraintForce* rodConstraint2 = new RodConstraint(pVector[1], pVector[2], 0.2);
+    constraintForces.push_back(slidingWire);
+    constraintForces.push_back(rodConstraint2);
+
+//    createCloth(4, 4);
 
 }
 
@@ -333,12 +326,9 @@ static void draw_particles(void) {
 static void draw_constraints(void) {
     for (auto &constraint : constraintForces) {
         constraint->draw();
-
-static void draw_forces(void) {
-    for (auto &force: forceVector) {
-        force->drawForce();
     }
 }
+
 
 static void draw_forces(void){
     for (auto &force : forceVector){
@@ -449,11 +439,7 @@ static void reshape_func(int width, int height) {
 }
 
 static void idle_func(void) {
-<<<<<<< HEAD
     if (dsim) simulation_step(pVector, forceVector, constraintForces,dt);
-=======
-    if (dsim) simulation_step(forceVector, pVector, dt);
->>>>>>> Fixed mouse interaction with user. However, this push introduced an "undefined reference to"
     else {
         get_from_UI();
         remap_GUI();

@@ -83,6 +83,3 @@ void LambdaSolver::solve(std::vector<Particle *> particles, std::vector<Constrai
     }
 }
 
-Vec2f LambdaSolver::applyConstraintForce() {
-    return gfx::Vec2f();
-}

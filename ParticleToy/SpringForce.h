@@ -11,8 +11,6 @@ public:
 
     void computeForce() override;
 
-    void drawForce() override;
-
 private:
 
     Particle *const m_p1;   // particle 1

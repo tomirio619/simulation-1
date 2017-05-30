@@ -19,13 +19,7 @@ void SpringForce::computeForce() {
     m_p2->force += fp1;
 }
 
-<<<<<<< HEAD
-
-
 void SpringForce::draw() {
-=======
-void SpringForce::drawForce() {
->>>>>>> Fixed mouse interaction with user. However, this push introduced an "undefined reference to"
     glBegin(GL_LINES);
     glColor3f(0.6, 0.7, 0.8);
     glVertex2f(m_p1->m_Position[0], m_p1->m_Position[1]);

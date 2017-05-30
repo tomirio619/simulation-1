@@ -22,15 +22,6 @@ void RodConstraint::draw() {
 
 }
 
-Vec2f RodConstraint::computeForce(Particle *p) {
-    MatrixXd QHat = LambdaSolver::solveLambda(getJ(), getW(), getJDot(), getqDot(), getQ());
-
-    m_p1->force[0] += QHat(0, 0);
-    m_p1->force[1] += QHat(0, 1);
-    m_p2->force[0] += QHat(0, 2);
-    m_p2->force[1] += QHat(0, 3);
-}
-
 VectorXd RodConstraint::getq() {
     VectorXd MatrixQ(4);
     MatrixQ(0) = particles[0]->m_Position[0];
