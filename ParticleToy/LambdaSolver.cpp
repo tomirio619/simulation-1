@@ -76,6 +76,7 @@ void LambdaSolver::solve(std::vector<Particle *> particles, std::vector<Constrai
     MatrixXd x =  cg.solve(RHS);
     MatrixXd QHat =  J.transpose() * x;
 
+
     for (int i = 0; i < particles.size(); i++) {
         //Particle 0's constraint force is stored at index 0 and 1
         particles[i]->force[0] += QHat(i*2, 0);
