@@ -38,7 +38,11 @@ void Midpoint::evaluate(std::vector<Particle *> particles, std::vector<Force *> 
         for (auto &particle: particles) {
             particle->force = Vec2f(0, 0);
         }
+
         // Apply forces
+        for (auto &force: forces) {
+            force->computeForce();
+        }
 
         // Constraints
         LambdaSolver::solve(particles, constraints, 60, 5);

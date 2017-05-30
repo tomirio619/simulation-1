@@ -397,12 +397,15 @@ static void key_func(unsigned char key, int x, int y) {
     switch (key) {
         case '1':
             integrationSchemeIndex = 0;
+            glutSetWindowTitle(integrationSchemeNames[0].c_str());
             break;
         case '2':
             integrationSchemeIndex = 1;
+            glutSetWindowTitle(integrationSchemeNames[1].c_str());
             break;
         case '3':
             integrationSchemeIndex = 2;
+            glutSetWindowTitle(integrationSchemeNames[2].c_str());
             break;
         case 'c':
         case 'C':
