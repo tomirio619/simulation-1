@@ -14,6 +14,7 @@
 #include "SlidingWireConstraint.h"
 #include "HorizontalForce.h"
 #include "WallForce.h"
+#include "AngularSpringForce.h"
 
 double particleMass = 1.0f;
 Vec2f center = Vec2f(0.0, 0.0);
@@ -145,5 +146,17 @@ void SetUp::setUpSlidingClothWall(std::vector<Particle *> &pVector, std::vector<
 }
 
 void SetUp::setUpAngularSpring(std::vector<Particle *> &pVector, std::vector<Force *> &forces) {
+    const double dist = 0.2;
+    Vec2f center = Vec2f(0, 0);
+    Vec2f left = Vec2f(-dist, 0);
+    Vec2f right = Vec2f(dist, 0);
+    Particle * p1 = new Particle(left, 1);
+    Particle * p2 = new Particle(center, 1);
+    Particle * p3 = new Particle(right, 1);
+    Force * angularSpringForce = new AngularSpringForce(p1, p2, p3, 90, 1.5, 1);
+    pVector.push_back(p1);
+    pVector.push_back(p2);
+    pVector.push_back(p3);
+    forces.push_back(angularSpringForce);
     return;
 }

@@ -40,7 +40,16 @@ set(SOURCE_FILES
         ParticleToy/Midpoint.h
         ParticleToy/LambdaSolver.cpp
         ParticleToy/LambdaSolver.h
-        ParticleToy/SlidingWireConstraint.cpp ParticleToy/SlidingWireConstraint.h ParticleToy/HorizontalForce.cpp ParticleToy/HorizontalForce.h ParticleToy/WallForce.cpp ParticleToy/WallForce.h ParticleToy/SetUp.cpp ParticleToy/SetUp.h)
+        ParticleToy/SlidingWireConstraint.cpp
+        ParticleToy/SlidingWireConstraint.h
+        ParticleToy/HorizontalForce.cpp
+        ParticleToy/HorizontalForce.h
+        ParticleToy/WallForce.cpp
+        ParticleToy/WallForce.h
+        ParticleToy/AngularSpringForce.cpp
+        ParticleToy/AngularSpringForce.h
+        ParticleToy/SetUp.cpp
+        ParticleToy/SetUp.h)
 
 find_package (OpenGL REQUIRED)
 #find_package (GLUT REQUIRED)

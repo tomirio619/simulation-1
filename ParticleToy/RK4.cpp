@@ -5,8 +5,6 @@
 #include <vector>
 #include "Particle.h"
 #include "RK4.h"
-#include "Force.h"
-#include "ConstraintForce.h"
 #include "LambdaSolver.h"
 
 void applyForces(std::vector<Force *> forces) {
@@ -19,16 +17,15 @@ void
 RK4::evaluate(std::vector<Particle *> particles, std::vector<Force *> forces,
               std::vector<ConstraintForce *> constraints,
               float dt) {
-    // Vector for storing positions
+    // Vector for storing original positions
     std::vector<Vec2f> orgPositions;
-
     // Vectors for storing intermediate values
     std::vector<Vec2f> k1s;
     std::vector<Vec2f> k2s;
     std::vector<Vec2f> k3s;
     std::vector<Vec2f> k4s;
 
-    // Counter
+    // Counter, used for looping through the k's
     unsigned i = 0;
 
     // Save current positions as we need them in every evaluation
@@ -46,9 +43,9 @@ RK4::evaluate(std::vector<Particle *> particles, std::vector<Force *> forces,
     // Calculate k1's
     for (auto &particle: particles) {
         particle->m_Velocity += particle->force * dt;
-        k1s.push_back(particle->m_Velocity);
+        k1s.push_back(particle->m_Velocity * dt);
         particle->m_Position += particle->m_Velocity * dt / 2.0f;
-     }
+    }
 
     i = 0;
     // Clear forces
@@ -61,13 +58,13 @@ RK4::evaluate(std::vector<Particle *> particles, std::vector<Force *> forces,
     // Calculate k2's
     for (auto &particle: particles) {
         particle->m_Velocity += particle->force * dt;
-        k2s.push_back(particle->m_Velocity);
-        particle->m_Position = orgPositions[i] + particle->m_Velocity * (dt / 2.0f);
+        k2s.push_back(particle->m_Velocity * dt);
+        particle->m_Position = orgPositions[i] + particle->m_Velocity * dt / 2.0f;
         i++;
     }
 
-    // Clear forces
     i = 0;
+    // Clear forces
     Force::clearForces(particles);
     // Apply forces
     applyForces(forces);
@@ -77,13 +74,13 @@ RK4::evaluate(std::vector<Particle *> particles, std::vector<Force *> forces,
     // Calculate k3's
     for (auto &particle: particles) {
         particle->m_Velocity += particle->force * dt;
-        k3s.push_back(particle->m_Velocity);
+        k3s.push_back(particle->m_Velocity * dt);
         particle->m_Position = orgPositions[i] + particle->m_Velocity * dt;
         i++;
     }
 
-    // Clear forces
     i = 0;
+    // Clear forces
     Force::clearForces(particles);
     // Apply forces
     applyForces(forces);
@@ -93,10 +90,11 @@ RK4::evaluate(std::vector<Particle *> particles, std::vector<Force *> forces,
     // Calculate k4's and do the final evaluation using the original position
     for (auto &particle: particles) {
         particle->m_Velocity += particle->force * dt;
-        k4s.push_back(particle->m_Velocity);
+        k4s.push_back(particle->m_Velocity * dt);
         particle->m_Position = orgPositions[i] + k1s[i] / 6.0f + k2s[i] / 3.0f + k3s[i] / 3.0f + k4s[i] / 6.0f;
         i++;
     }
+    orgPositions.clear();
 
 }
 
