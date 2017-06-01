@@ -144,13 +144,13 @@ void SetUp::setUpSlidingClothWall(std::vector<Particle *> &pVector, std::vector<
 
 void SetUp::setUpAngularSpring(std::vector<Particle *> &pVector, std::vector<Force *> &forces) {
     const double dist = 0.2;
-    Vec2f center = Vec2f(0, 0);
+    Vec2f center = Vec2f(0, -0.5);
     Vec2f left = Vec2f(-dist, 0);
     Vec2f right = Vec2f(dist, 0);
     Particle *p1 = new Particle(left, 1);
     Particle *p2 = new Particle(center, 1);
     Particle *p3 = new Particle(right, 1);
-    Force *angularSpringForce = new AngularSpringForce(p1, p2, p3, 0.2, 120, 0.2, 0.1);
+    Force *angularSpringForce = new AngularSpringForce(p1, p2, p3, 0.2, 50, 0.2, 0.1);
 //    Force *sp1 = new SpringForce(p1, p2, 0.2, 0.2, 0.2);
 //    Force *sp2 = new SpringForce(p2, p3, 0.2, 0.2, 0.2);
     pVector.push_back(p1);
