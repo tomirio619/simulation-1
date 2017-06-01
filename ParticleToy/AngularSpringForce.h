@@ -14,7 +14,7 @@ class AngularSpringForce : public Force {
 public:
     AngularSpringForce();
 
-    AngularSpringForce(Particle *p1, Particle *p2, Particle *p3, double ra, double sk1, double sk2);
+    AngularSpringForce(Particle *p1, Particle *p2, Particle *p3, double r, double ra, double ks, double kd);
 
     void computeForce() override;
 
@@ -23,17 +23,22 @@ public:
 private:
 
     /**
-     * Stiffness constant 1
+     * Stiffness constant
      */
-    double sk1;
+    double ks;
     /**
-     * Stiffness constant 2
+     * Damping constant
      */
-    double sk2;
+    double kd;
     /**
-     * Resting angle
+     * Rest angle
      */
     double ra;
+
+    /**
+     * Rest length
+     */
+    double r;
     /**
      * Particles
      */
