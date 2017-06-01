@@ -1,7 +1,3 @@
-//
-// Created by Tomirio on 23-5-2017.
-//
-
 #include <vector>
 #include "Particle.h"
 #include "RK4.h"
@@ -42,7 +38,7 @@ RK4::evaluate(std::vector<Particle *> particles, std::vector<Force *> forces,
 
     // Calculate k1's
     for (auto &particle: particles) {
-        particle->m_Velocity += (particle->force/particle->mass) * dt;
+        particle->m_Velocity += (particle->m_Force/particle->mass) * dt;
         k1s.push_back(particle->m_Velocity * dt);
         particle->m_Position += particle->m_Velocity * dt / 2.0f;
     }
@@ -57,7 +53,7 @@ RK4::evaluate(std::vector<Particle *> particles, std::vector<Force *> forces,
 
     // Calculate k2's
     for (auto &particle: particles) {
-        particle->m_Velocity += (particle->force/particle->mass) * dt;
+        particle->m_Velocity += (particle->m_Force/particle->mass) * dt;
         k2s.push_back(particle->m_Velocity * dt);
         particle->m_Position = orgPositions[i] + particle->m_Velocity * dt / 2.0f;
         i++;
@@ -73,7 +69,7 @@ RK4::evaluate(std::vector<Particle *> particles, std::vector<Force *> forces,
 
     // Calculate k3's
     for (auto &particle: particles) {
-        particle->m_Velocity += (particle->force/particle->mass) * dt;
+        particle->m_Velocity += (particle->m_Force/particle->mass) * dt;
         k3s.push_back(particle->m_Velocity * dt);
         particle->m_Position = orgPositions[i] + particle->m_Velocity * dt;
         i++;
@@ -89,7 +85,7 @@ RK4::evaluate(std::vector<Particle *> particles, std::vector<Force *> forces,
 
     // Calculate k4's and do the final evaluation using the original position
     for (auto &particle: particles) {
-        particle->m_Velocity += (particle->force/particle->mass) * dt;
+        particle->m_Velocity += (particle->m_Force/particle->mass) * dt;
         k4s.push_back(particle->m_Velocity * dt);
         particle->m_Position = orgPositions[i] + k1s[i] / 6.0f + k2s[i] / 3.0f + k3s[i] / 3.0f + k4s[i] / 6.0f;
         i++;

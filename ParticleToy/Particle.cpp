@@ -29,7 +29,7 @@ void Particle::drawForce(){
     glColor3f(0.000, 0.000, 1.000);
     glBegin(GL_LINES);
     glVertex2f(m_Position[0], m_Position[1]);
-    glVertex2f(m_Position[0] + force[0] * 10, m_Position[1] + force[1] * 10);
+    glVertex2f(m_Position[0] + m_Force[0] * 10, m_Position[1] + m_Force[1] * 10);
     glEnd();
 }
 

@@ -17,7 +17,7 @@ public:
     Vec2f m_ConstructPos;
     Vec2f m_Position;
     Vec2f m_Velocity;
-    Vec2f force;
+    Vec2f m_Force;
     double mass;
 
     void drawForce();

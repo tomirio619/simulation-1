@@ -1,7 +1,3 @@
-//
-// Created by abdullah on 29/05/2017.
-//
-
 #include <GL/gl.h>
 #include "SlidingWireConstraint.h"
 
@@ -64,8 +60,8 @@ VectorXd SlidingWireConstraint::getqDot() {
 
 VectorXd SlidingWireConstraint::getQ() {
     VectorXd MatrixQ(2);
-    MatrixQ(0) = p1->force[0];
-    MatrixQ(1) = p1->force[1];
+    MatrixQ(0) = p1->m_Force[0];
+    MatrixQ(1) = p1->m_Force[1];
     return MatrixQ;
 }
 

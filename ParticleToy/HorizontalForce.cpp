@@ -1,7 +1,3 @@
-//
-// Created by abdullah on 30/05/2017.
-//
-
 #include "HorizontalForce.h"
 
 HorizontalForce::HorizontalForce(Particle* p1, double force) : Force() {
@@ -12,7 +8,7 @@ HorizontalForce::HorizontalForce(Particle* p1, double force) : Force() {
 }
 
 void HorizontalForce::computeForce() {
-    this->p1->force += Vec2f(force, 0);
+    this->p1->m_Force += Vec2f(force, 0);
 }
 
 void HorizontalForce::draw() {

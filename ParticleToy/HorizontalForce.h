@@ -1,7 +1,3 @@
-//
-// Created by abdullah on 30/05/2017.
-//
-
 #ifndef SIMULATION_1_HORIZONTALFORCE_H
 #define SIMULATION_1_HORIZONTALFORCE_H
 

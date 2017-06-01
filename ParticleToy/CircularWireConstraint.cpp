@@ -1,10 +1,6 @@
 #include "CircularWireConstraint.h"
 #include <GL/glut.h>
 
-#define PI 3.1415926535897932384626433832795
-
-
-
 CircularWireConstraint::CircularWireConstraint(Particle *p, const Vec2f &center, const double radius) :
         m_p(p), m_center(center), m_radius(radius) {
     this->particles.push_back(p);
@@ -15,7 +11,7 @@ void CircularWireConstraint::draw() {
     glBegin(GL_LINE_LOOP);
     glColor3f(0.0, 1.0, 0.0);
     for (int i = 0; i < 360; i = i + 18) {
-        float degInRad = i * PI / 180;
+        float degInRad = i * M_PI / 180;
         glVertex2f(m_center[0] + cos(degInRad) * m_radius, m_center[1] + sin(degInRad) * m_radius);
     }
     glEnd();
@@ -68,7 +64,7 @@ VectorXd CircularWireConstraint::getqDot() {
 
 VectorXd CircularWireConstraint::getQ() {
     VectorXd MatrixQ(2);
-    MatrixQ(0) = m_p->force[0];
-    MatrixQ(1) = m_p->force[1];
+    MatrixQ(0) = m_p->m_Force[0];
+    MatrixQ(1) = m_p->m_Force[1];
     return MatrixQ;
 }

@@ -1,7 +1,3 @@
-//
-// Created by abdullah on 30/05/2017.
-//
-
 #include "SetUp.h"
 #include "SpringForce.h"
 #include "GravityForce.h"

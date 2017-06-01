@@ -1,7 +1,3 @@
-//
-// Created by Tomirio on 23-5-2017.
-//
-
 #include <vector>
 #include "Particle.h"
 #include "Force.h"
@@ -22,7 +18,7 @@ void ForwardEuler::evaluate(std::vector<Particle *> particles, std::vector<Force
 
     // Apply changes in velocity
     for (auto &particle: particles) {
-        particle->m_Velocity += ( (particle->force/particle->mass) * dt);
+        particle->m_Velocity += ( (particle->m_Force/particle->mass) * dt);
         particle->m_Position += (particle->m_Velocity * dt);
     }
 

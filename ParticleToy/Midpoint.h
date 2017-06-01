@@ -1,7 +1,3 @@
-//
-// Created by Tomirio on 24-5-2017.
-//
-
 #ifndef SIMULATION_1_MIDPOINT_H
 #define SIMULATION_1_MIDPOINT_H
 

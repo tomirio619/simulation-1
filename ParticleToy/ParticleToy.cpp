@@ -1,6 +1,3 @@
-// ParticleToy.cpp : Defines the entry point for the console application.
-//
-
 #include "Particle.h"
 #include "SpringForce.h"
 #include "RodConstraint.h"
@@ -107,7 +104,7 @@ void onMenuItemChanged(int item){
             break;
         case 3:
             SetUp::setUpSpringforce(pVector, forceVector);
-            glutSetWindowTitle("Spring force");
+            glutSetWindowTitle("Spring m_Force");
             break;
         case 4:
             SetUp::setUpRodConstraint(pVector, forceVector, constraintForces);
@@ -251,16 +248,16 @@ void onMouseButton(int button, int state, int x, int y) {
     }
 
     if (button == GLUT_RIGHT_BUTTON && state == GLUT_UP){
-        //On right mouse click, if there is a cloth we would like to apply a horizontal force on the cloth
+        //On right mouse click, if there is a cloth we would like to apply a horizontal m_Force on the cloth
         if (clothCreated){
-            //If we have a cloth / are in cloth mode, apply the horizontal force on all the particles
+            //If we have a cloth / are in cloth mode, apply the horizontal m_Force on all the particles
             //of the first row, such that we have a sliding effect
             for (int i = 0; i < clothDimension; ++i) {
                 Force* horizontalForce = new HorizontalForce(pVector[i], 0.3f);
                 forceVector.push_back(horizontalForce);
             }
         }
-        //Get the particle which is close and apply the horizontal force on that particle
+        //Get the particle which is close and apply the horizontal m_Force on that particle
         Force* horizontalForce = new HorizontalForce(pVector[0], 0.05f);
         forceVector.push_back(horizontalForce);
     }

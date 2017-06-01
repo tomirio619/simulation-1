@@ -1,7 +1,3 @@
-//
-// Created by Tomirio on 24-5-2017.
-//
-
 #include <vector>
 #include "Particle.h"
 #include "Force.h"
@@ -30,7 +26,7 @@ void Midpoint::evaluate(std::vector<Particle *> particles, std::vector<Force *> 
     }
     // Apply changes in velocity
     for (auto &particle: particles) {
-        particle->m_Velocity += (particle->force/particle->mass) * dt;
+        particle->m_Velocity += (particle->m_Force/particle->mass) * dt;
         particle->m_Position += particle->m_Velocity * dt / 2.0f;
     }
 
@@ -45,7 +41,7 @@ void Midpoint::evaluate(std::vector<Particle *> particles, std::vector<Force *> 
 
     // Final evaluation
     for (auto &particle: particles) {
-        particle->m_Velocity += particle->force * dt / 2.0f;
+        particle->m_Velocity += particle->m_Force * dt / 2.0f;
         particle->m_Position = orgPositions[i++] + particle->m_Velocity * dt;
     }
 }

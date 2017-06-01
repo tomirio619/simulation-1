@@ -1,7 +1,3 @@
-//
-// Created by abdullah on 30/05/2017.
-//
-
 #ifndef SIMULATION_1_WALLFORCE_H
 #define SIMULATION_1_WALLFORCE_H
 

@@ -1,7 +1,3 @@
-//
-// Created by abdullah on 30/05/2017.
-//
-
 #include <GL/gl.h>
 #include "WallForce.h"
 
@@ -14,7 +10,7 @@ WallForce::WallForce(Particle* p1, double x) : Force() {
 void WallForce::computeForce() {
     if (p->m_Position[0] >= x){
         p->m_Velocity -= Vec2f(p->m_Velocity[0] + 0.1f, 0.0);
-        p->force -= Vec2f(p->force[0] + 0.1f, 0.0);
+        p->m_Force -= Vec2f(p->m_Force[0] + 0.1f, 0.0);
     }
 }
 

@@ -1,7 +1,3 @@
-//
-// Created by Tomirio on 23-5-2017.
-//
-
 #include <vector>
 #include "Particle.h"
 #include "Force.h"

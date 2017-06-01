@@ -99,9 +99,9 @@ MatrixXd RodConstraint::getJDot() {
  */
 VectorXd RodConstraint::getQ() {
     VectorXd MatrixQ(4);
-    MatrixQ(0) = particles[0]->force[0];
-    MatrixQ(1) = particles[0]->force[1];
-    MatrixQ(2) = particles[1]->force[0];
-    MatrixQ(3) = particles[1]->force[1];
+    MatrixQ(0) = particles[0]->m_Force[0];
+    MatrixQ(1) = particles[0]->m_Force[1];
+    MatrixQ(2) = particles[1]->m_Force[0];
+    MatrixQ(3) = particles[1]->m_Force[1];
     return MatrixQ;
 }

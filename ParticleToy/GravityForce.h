@@ -1,7 +1,3 @@
-//
-// Created by abdullah on 23/05/2017.
-//
-
 #ifndef SIMULATION_1_GRAVITYFORCE_H
 #define SIMULATION_1_GRAVITYFORCE_H
 

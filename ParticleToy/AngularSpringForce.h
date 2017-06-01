@@ -1,7 +1,3 @@
-//
-// Created by Tomirio on 30-5-2017.
-//
-
 #ifndef SIMULATION_1_ANGULARSPRINGFORCE_H
 #define SIMULATION_1_ANGULARSPRINGFORCE_H
 
@@ -25,26 +21,26 @@ private:
     /**
      * Stiffness constant
      */
-    double ks;
+    double m_ks;
     /**
      * Damping constant
      */
-    double kd;
+    double m_kd;
     /**
      * Rest angle
      */
-    double ra;
+    double m_ra;
 
     /**
      * Rest length
      */
-    double r;
+    double m_r;
     /**
      * Particles
      */
-    Particle * p1;
-    Particle * p2;
-    Particle * p3;
+    Particle * m_p1;
+    Particle * m_p2;
+    Particle * m_p3;
 };
 
 

@@ -1,7 +1,3 @@
-//
-// Created by abdullah on 23/05/2017.
-//
-
 #include "LambdaSolver.h"
 #include "Eigen/Dense"
 #include "linearSolver.h"
@@ -59,8 +55,8 @@ void LambdaSolver::solve(std::vector<Particle *> particles, std::vector<Constrai
         qdot(particle->row) = particle->m_Velocity[0];
         qdot(particle->row+1) = particle->m_Velocity[1];
 
-        Q(particle->row) = particle->force[0];
-        Q(particle->row+1) = particle->force[1];
+        Q(particle->row) = particle->m_Force[0];
+        Q(particle->row+1) = particle->m_Force[1];
     }
 
     MatrixXd JdotQdot = Jdot*qdot;
@@ -78,8 +74,8 @@ void LambdaSolver::solve(std::vector<Particle *> particles, std::vector<Constrai
 
 
     for (int i = 0; i < particles.size(); i++) {
-        //Particle 0's constraint force is stored at index 0 and 1
-        particles[i]->force[0] += QHat(i*2, 0);
-        particles[i]->force[1] += QHat(i*2+1, 0);
+        //Particle 0's constraint m_Force is stored at index 0 and 1
+        particles[i]->m_Force[0] += QHat(i*2, 0);
+        particles[i]->m_Force[1] += QHat(i*2+1, 0);
     }
 }
