@@ -30,10 +30,7 @@ void Midpoint::evaluate(std::vector<Particle *> particles, std::vector<Force *> 
     }
     // Apply changes in velocity
     for (auto &particle: particles) {
-        particle->m_Velocity += particle->force * dt;
-    }
-    // Apply changes in position
-    for (auto &particle: particles) {
+        particle->m_Velocity += (particle->force/particle->mass) * dt;
         particle->m_Position += particle->m_Velocity * dt / 2.0f;
     }
 

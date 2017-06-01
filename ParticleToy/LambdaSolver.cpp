@@ -83,4 +83,3 @@ void LambdaSolver::solve(std::vector<Particle *> particles, std::vector<Constrai
         particles[i]->force[1] += QHat(i*2+1, 0);
     }
 }
-
