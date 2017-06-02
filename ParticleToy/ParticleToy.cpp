@@ -1,20 +1,17 @@
 #include "Particle.h"
-#include "SpringForce.h"
-#include "RodConstraint.h"
-#include "CircularWireConstraint.h"
-#include "GravityForce.h"
-#include "SlidingWireConstraint.h"
-#include "HorizontalForce.h"
-#include "WallForce.h"
+#include "forces/SpringForce.h"
+#include "constraints/RodConstraint.h"
+#include "constraints/CircularWireConstraint.h"
+#include "forces/HorizontalForce.h"
 
 #include <GL/glut.h>
-#include "string.h"
 #include "SetUp.h"
 
 /* macros */
 
 /* external definitions (from solver) */
-extern void simulation_step(std::vector<Particle *> particle, std::vector<Force *> forces, std::vector<ConstraintForce *> constraints, float dt, int isi);
+extern void simulation_step(std::vector<Particle *> particle, std::vector<Force *> forces,
+                            std::vector<ConstraintForce *> constraints, float dt, int isi);
 
 void createWall(double xPosition);
 
@@ -85,11 +82,11 @@ static void clear_data(void) {
  * Only works when the simulation is in halt
  * @param item
  */
-void onMenuItemChanged(int item){
+void onMenuItemChanged(int item) {
     free_data();
     clear_data();
 
-    switch (item){
+    switch (item) {
         case 0:
             SetUp::setUpSlidingCloth(pVector, forceVector, constraintForces, 4);
             glutSetWindowTitle("4 by 4 cloth. Right mouse click to slide");
@@ -138,7 +135,7 @@ static void init_system(void) {
 
     double particleMass = 1.0f;
 
-    Particle* centerParticle = new Particle(center, particleMass);
+    Particle *centerParticle = new Particle(center, particleMass);
     pVector.push_back(centerParticle);
 
 }
@@ -247,18 +244,18 @@ void onMouseButton(int button, int state, int x, int y) {
         }
     }
 
-    if (button == GLUT_RIGHT_BUTTON && state == GLUT_UP){
+    if (button == GLUT_RIGHT_BUTTON && state == GLUT_UP) {
         //On right mouse click, if there is a cloth we would like to apply a horizontal m_Force on the cloth
-        if (clothCreated){
+        if (clothCreated) {
             //If we have a cloth / are in cloth mode, apply the horizontal m_Force on all the particles
             //of the first row, such that we have a sliding effect
             for (int i = 0; i < clothDimension; ++i) {
-                Force* horizontalForce = new HorizontalForce(pVector[i], 0.3f);
+                Force *horizontalForce = new HorizontalForce(pVector[i], 0.3f);
                 forceVector.push_back(horizontalForce);
             }
         }
         //Get the particle which is close and apply the horizontal m_Force on that particle
-        Force* horizontalForce = new HorizontalForce(pVector[0], 0.05f);
+        Force *horizontalForce = new HorizontalForce(pVector[0], 0.05f);
         forceVector.push_back(horizontalForce);
     }
 }
@@ -332,8 +329,8 @@ static void draw_constraints(void) {
 }
 
 
-static void draw_forces(void){
-    for (auto &force : forceVector){
+static void draw_forces(void) {
+    for (auto &force : forceVector) {
         force->draw();
     }
 
@@ -464,7 +461,7 @@ static void idle_func(void) {
     glutPostRedisplay();
 }
 
-void setUpMenu(){
+void setUpMenu() {
     glutCreateMenu(onMenuItemChanged);
 
     glutAddMenuEntry("4 by 4 sliding cloth", 0);
@@ -538,7 +535,7 @@ int main(int argc, char **argv) {
     fflush(stdout);
     if (argc == 1) {
         N = 64;
-        dt = 0.001f;
+        dt = 0.01f;
         d = 5.f;
 
         fprintf(stderr, "Using defaults : N=%d dt=%g d=%g\n",

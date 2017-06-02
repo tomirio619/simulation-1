@@ -9,12 +9,10 @@ SpringForce::SpringForce(Particle *p1, Particle *p2, double dist, double ks, dou
 }
 
 void SpringForce::computeForce() {
-    Vec2f l = this->m_p1->m_Position - this->m_p2->m_Position;
+    Vec2f l = m_p1->m_Position - m_p2->m_Position;
     float l_bars = sqrtf(l * l);
-
-    Vec2f l_dot = this->m_p1->m_Velocity - this->m_p2->m_Velocity;
-
-    Vec2f fp1 = (m_ks * (l_bars - this->m_dist) + m_kd * (l_dot * l) / l_bars) * (l / l_bars);
+    Vec2f l_dot = m_p1->m_Velocity - m_p2->m_Velocity;
+    Vec2f fp1 = (m_ks * (l_bars - m_dist) + m_kd * (l_dot * l) / l_bars) * (l / l_bars);
     m_p1->m_Force -= fp1;
     m_p2->m_Force += fp1;
 }

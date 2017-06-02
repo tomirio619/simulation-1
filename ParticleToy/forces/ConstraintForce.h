@@ -14,12 +14,17 @@ public:
     ConstraintForce();
 
     virtual double getC();
+
     virtual double getCdot();
+
     virtual VectorXd getq(); //Get q, which is a vector of positions
     virtual MatrixXd getJ(); //Get J, which is the partial derivative vector
     virtual MatrixXd getW();
+
     virtual MatrixXd getJDot();
+
     virtual VectorXd getqDot();
+
     virtual VectorXd getQ();
 
     virtual void draw();

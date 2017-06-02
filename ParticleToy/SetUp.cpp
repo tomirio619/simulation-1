@@ -1,12 +1,12 @@
 #include "SetUp.h"
-#include "SpringForce.h"
-#include "GravityForce.h"
-#include "RodConstraint.h"
-#include "CircularWireConstraint.h"
-#include "SlidingWireConstraint.h"
-#include "HorizontalForce.h"
-#include "WallForce.h"
-#include "AngularSpringForce.h"
+#include "forces/SpringForce.h"
+#include "forces/GravityForce.h"
+#include "constraints/RodConstraint.h"
+#include "constraints/CircularWireConstraint.h"
+#include "constraints/SlidingWireConstraint.h"
+#include "forces/HorizontalForce.h"
+#include "forces/WallForce.h"
+#include "forces/AngularSpringForce.h"
 
 double particleMass = 1.0f;
 Vec2f center = Vec2f(0.0, 0.0);
@@ -139,6 +139,7 @@ void SetUp::setUpSlidingClothWall(std::vector<Particle *> &pVector, std::vector<
 }
 
 void SetUp::setUpAngularSpring(std::vector<Particle *> &pVector, std::vector<Force *> &forces) {
+    forces.clear();
     const double dist = 0.2;
     Vec2f center = Vec2f(0, -0.5);
     Vec2f left = Vec2f(-dist, 0);
@@ -146,14 +147,12 @@ void SetUp::setUpAngularSpring(std::vector<Particle *> &pVector, std::vector<For
     Particle *p1 = new Particle(left, 1);
     Particle *p2 = new Particle(center, 1);
     Particle *p3 = new Particle(right, 1);
-    Force *angularSpringForce = new AngularSpringForce(p1, p2, p3, 0.2, 50, 0.2, 0.1);
-//    Force *sp1 = new SpringForce(p1, p2, 0.2, 0.2, 0.2);
-//    Force *sp2 = new SpringForce(p2, p3, 0.2, 0.2, 0.2);
+    Force *angularSpringForce = new AngularSpringForce(p1, p2, p3, 0.5, 70, 0.1, 0.001);
     pVector.push_back(p1);
     pVector.push_back(p2);
     pVector.push_back(p3);
     forces.push_back(angularSpringForce);
-//    forces.push_back(sp1);
-//    forces.push_back(sp2);
+//    Force *dampForce = new DampForce(pVector, 0.9);
+//    forces.push_back(dampForce);
     return;
 }

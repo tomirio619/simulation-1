@@ -2,9 +2,9 @@
 #define SIMULATION_1_SLIDINGWIRECONSTRAINT_H
 
 
-#include "ConstraintForce.h"
+#include "../forces/ConstraintForce.h"
 
-class SlidingWireConstraint : public ConstraintForce{
+class SlidingWireConstraint : public ConstraintForce {
 
 public:
     SlidingWireConstraint();
@@ -31,7 +31,7 @@ public:
 
 private:
     double height;
-    Particle * p1;
+    Particle *p1;
 
 };
 

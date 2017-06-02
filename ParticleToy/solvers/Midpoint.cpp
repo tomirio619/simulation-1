@@ -1,9 +1,9 @@
 #include <vector>
-#include "Particle.h"
-#include "Force.h"
-#include "ConstraintForce.h"
+#include "../Particle.h"
+#include "../forces/Force.h"
+#include "../forces/ConstraintForce.h"
 #include "Midpoint.h"
-#include "LambdaSolver.h"
+#include "../LambdaSolver.h"
 
 
 void Midpoint::evaluate(std::vector<Particle *> particles, std::vector<Force *> forces,
@@ -26,7 +26,7 @@ void Midpoint::evaluate(std::vector<Particle *> particles, std::vector<Force *> 
     }
     // Apply changes in velocity
     for (auto &particle: particles) {
-        particle->m_Velocity += (particle->m_Force/particle->mass) * dt;
+        particle->m_Velocity += (particle->m_Force / particle->m_Mass) * dt;
         particle->m_Position += particle->m_Velocity * dt / 2.0f;
     }
 

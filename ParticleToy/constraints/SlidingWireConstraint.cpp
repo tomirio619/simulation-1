@@ -1,7 +1,7 @@
 #include <GL/gl.h>
 #include "SlidingWireConstraint.h"
 
-SlidingWireConstraint::SlidingWireConstraint(Particle* p1, double height) : ConstraintForce() {
+SlidingWireConstraint::SlidingWireConstraint(Particle *p1, double height) : ConstraintForce() {
 
     this->particles.push_back(p1);
     this->height = height;
@@ -38,8 +38,8 @@ MatrixXd SlidingWireConstraint::getJ() {
 
 MatrixXd SlidingWireConstraint::getW() {
     MatrixXd MatrixW(2, 2);
-    MatrixW(0, 0) = 1 / (p1->mass);
-    MatrixW(1, 1) = 1 / (p1->mass);
+    MatrixW(0, 0) = 1 / (p1->m_Mass);
+    MatrixW(1, 1) = 1 / (p1->m_Mass);
     return MatrixW;
 }
 

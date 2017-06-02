@@ -4,7 +4,7 @@
 
 #include "Force.h"
 
-class WallForce : public Force{
+class WallForce : public Force {
 
 public:
     WallForce();
@@ -17,7 +17,7 @@ public:
 
 private:
     double x;
-    Particle* p;
+    Particle *p;
 
 };
 

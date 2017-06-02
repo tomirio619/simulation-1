@@ -1,7 +1,7 @@
 #include <vector>
-#include "Particle.h"
-#include "Force.h"
-#include "ConstraintForce.h"
+#include "../Particle.h"
+#include "../forces/Force.h"
+#include "../forces/ConstraintForce.h"
 
 #ifndef SIMULATION_1_RUNGEKUTTAFOURTH_H
 #define SIMULATION_1_RUNGEKUTTAFOURTH_H
@@ -14,7 +14,7 @@
 class RK4 {
 public:
     static void
-    evaluate(std::vector<Particle *> particles, std::vector<Force *> forces, std::vector<ConstraintForce* > constraints,
+    evaluate(std::vector<Particle *> particles, std::vector<Force *> forces, std::vector<ConstraintForce *> constraints,
              float dt);
 };
 

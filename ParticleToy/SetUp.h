@@ -4,8 +4,8 @@
 
 #include <Eigen/StdVector>
 #include "Particle.h"
-#include "Force.h"
-#include "ConstraintForce.h"
+#include "forces/Force.h"
+#include "forces/ConstraintForce.h"
 
 class SetUp {
 
@@ -14,17 +14,23 @@ public:
 
     static void setUpGravity(std::vector<Particle *> &pVector, std::vector<Force *> &forces);
 
-    static void setUpRodConstraint(std::vector<Particle *> &pVector, std::vector<Force *> &forces, std::vector<ConstraintForce *> &constraints);
+    static void setUpRodConstraint(std::vector<Particle *> &pVector, std::vector<Force *> &forces,
+                                   std::vector<ConstraintForce *> &constraints);
 
-    static void setUpCircularConstraint(std::vector<Particle *> &pVector, std::vector<Force *> &forces, std::vector<ConstraintForce *> &constraints);
+    static void setUpCircularConstraint(std::vector<Particle *> &pVector, std::vector<Force *> &forces,
+                                        std::vector<ConstraintForce *> &constraints);
 
-    static void setUpHorizontalConstraint(std::vector<Particle *> &pVector, std::vector<Force *> &forces, std::vector<ConstraintForce *> &constraints);
+    static void setUpHorizontalConstraint(std::vector<Particle *> &pVector, std::vector<Force *> &forces,
+                                          std::vector<ConstraintForce *> &constraints);
 
-    static void setUpMixedConstraint(std::vector<Particle *> &pVector, std::vector<Force *> &forces, std::vector<ConstraintForce *> &constraints);
+    static void setUpMixedConstraint(std::vector<Particle *> &pVector, std::vector<Force *> &forces,
+                                     std::vector<ConstraintForce *> &constraints);
 
-    static void setUpSlidingCloth(std::vector<Particle *> &pVector, std::vector<Force *> &forces, std::vector<ConstraintForce *> &constraints, int size);
+    static void setUpSlidingCloth(std::vector<Particle *> &pVector, std::vector<Force *> &forces,
+                                  std::vector<ConstraintForce *> &constraints, int size);
 
-    static void setUpSlidingClothWall(std::vector<Particle *> &pVector, std::vector<Force *> &forces, std::vector<ConstraintForce *> &constraints, int size);
+    static void setUpSlidingClothWall(std::vector<Particle *> &pVector, std::vector<Force *> &forces,
+                                      std::vector<ConstraintForce *> &constraints, int size);
 
     static void setUpAngularSpring(std::vector<Particle *> &pVector, std::vector<Force *> &forces);
 };

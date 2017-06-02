@@ -1,7 +1,6 @@
 #include "RodConstraint.h"
-#include "LambdaSolver.h"
+#include "../LambdaSolver.h"
 #include <GL/glut.h>
-#include "Eigen/Dense"
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -32,8 +31,9 @@ VectorXd RodConstraint::getq() {
 }
 
 double RodConstraint::getC() {
-    return (particles[0]->m_Position - particles[1]->m_Position) * (particles[0]->m_Position - particles[1]->m_Position) -
-            m_dist * m_dist;
+    return (particles[0]->m_Position - particles[1]->m_Position) *
+           (particles[0]->m_Position - particles[1]->m_Position) -
+           m_dist * m_dist;
 }
 
 /**
@@ -41,8 +41,8 @@ double RodConstraint::getC() {
  * @return
  */
 double RodConstraint::getCdot() {
-    return ( (particles[0]->m_Position - particles[1]->m_Position)) *
-            (  (particles[0]->m_Velocity - particles[1]->m_Velocity) );
+    return ((particles[0]->m_Position - particles[1]->m_Position)) *
+           ((particles[0]->m_Velocity - particles[1]->m_Velocity));
 }
 
 /**
@@ -64,10 +64,10 @@ MatrixXd RodConstraint::getJ() {
 
 MatrixXd RodConstraint::getW() {
     MatrixXd MatrixW(4, 4);
-    MatrixW(0, 0) = 1 / (particles[0]->mass);
-    MatrixW(1, 1) = 1 / (particles[0]->mass);
-    MatrixW(2, 2) = 1 / (particles[1]->mass);
-    MatrixW(3, 3) = 1 / (particles[1]->mass);
+    MatrixW(0, 0) = 1 / (particles[0]->m_Mass);
+    MatrixW(1, 1) = 1 / (particles[0]->m_Mass);
+    MatrixW(2, 2) = 1 / (particles[1]->m_Mass);
+    MatrixW(3, 3) = 1 / (particles[1]->m_Mass);
     return MatrixW;
 }
 

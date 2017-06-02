@@ -3,7 +3,7 @@
 
 Particle::Particle(const Vec2f &ConstructPos, double m) :
         m_ConstructPos(ConstructPos), m_Position(Vec2f(0.0, 0.0)), m_Velocity(Vec2f(0.0, 0.0)) {
-    this->mass = m;
+    this->m_Mass = m;
 }
 
 Particle::~Particle(void) {
@@ -25,7 +25,7 @@ void Particle::draw() {
     glEnd();
 }
 
-void Particle::drawForce(){
+void Particle::drawForce() {
     glColor3f(0.000, 0.000, 1.000);
     glBegin(GL_LINES);
     glVertex2f(m_Position[0], m_Position[1]);
@@ -33,7 +33,7 @@ void Particle::drawForce(){
     glEnd();
 }
 
-void Particle::drawVelocity(){
+void Particle::drawVelocity() {
     glColor3f(0.000, 1.000, 0.000);
     glBegin(GL_LINES);
     glVertex2f(m_Position[0], m_Position[1]);

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Particle.h"
-#include "ConstraintForce.h"
+#include "../Particle.h"
+#include "../forces/ConstraintForce.h"
 
 class CircularWireConstraint : public ConstraintForce {
 public:

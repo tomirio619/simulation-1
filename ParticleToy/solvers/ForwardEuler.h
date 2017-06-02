@@ -3,8 +3,8 @@
 //
 
 #include <vector>
-#include "Particle.h"
-#include "ConstraintForce.h"
+#include "../Particle.h"
+#include "../forces/ConstraintForce.h"
 
 #ifndef SIMULATION_1_FORWARDEULER_H
 #define SIMULATION_1_FORWARDEULER_H

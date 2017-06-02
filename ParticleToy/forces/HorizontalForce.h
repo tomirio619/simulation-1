@@ -4,7 +4,7 @@
 
 #include "Force.h"
 
-class HorizontalForce : public Force{
+class HorizontalForce : public Force {
 public:
     HorizontalForce(Particle *p1);
 
@@ -16,7 +16,7 @@ public:
 
 private:
     double force;
-    Particle* p1;
+    Particle *p1;
 
 };
 

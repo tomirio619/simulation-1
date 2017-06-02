@@ -1,13 +1,13 @@
-#include "Particle.h"
-#include "Force.h"
+#include "../Particle.h"
+#include "../forces/Force.h"
 #include "ForwardEuler.h"
-#include "ConstraintForce.h"
 #include "Midpoint.h"
 #include "RK4.h"
 
 
-void simulation_step(std::vector<Particle *> particles, std::vector<Force *> forces, std::vector<ConstraintForce *> constraints, float dt, int integrationSchemeIndex) {
-    switch (integrationSchemeIndex){
+void simulation_step(std::vector<Particle *> particles, std::vector<Force *> forces,
+                     std::vector<ConstraintForce *> constraints, float dt, int integrationSchemeIndex) {
+    switch (integrationSchemeIndex) {
         case 0:
             ForwardEuler::evaluate(particles, forces, constraints, dt);
             break;

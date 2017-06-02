@@ -18,11 +18,12 @@ void CircularWireConstraint::draw() {
 }
 
 double CircularWireConstraint::getC() {
-    return pow(this->m_p->m_Position[0] - m_center[0], 2.0) + pow(this->m_p->m_Position[1] - m_center[1], 2.0) - pow(m_radius, 2.0);
+    return pow(this->m_p->m_Position[0] - m_center[0], 2.0) + pow(this->m_p->m_Position[1] - m_center[1], 2.0) -
+           pow(m_radius, 2.0);
 }
 
 double CircularWireConstraint::getCdot() {
-    return ( 2 * (m_p->m_Position - m_center)) * (2 * m_p->m_Velocity);
+    return (2 * (m_p->m_Position - m_center)) * (2 * m_p->m_Velocity);
 }
 
 VectorXd CircularWireConstraint::getq() {
@@ -42,8 +43,8 @@ MatrixXd CircularWireConstraint::getJ() {
 
 MatrixXd CircularWireConstraint::getW() {
     MatrixXd MatrixW(2, 2);
-    MatrixW(0, 0) = 1 / (m_p->mass);
-    MatrixW(1, 1) = 1 / (m_p->mass);
+    MatrixW(0, 0) = 1 / (m_p->m_Mass);
+    MatrixW(1, 1) = 1 / (m_p->m_Mass);
     return MatrixW;
 }
 

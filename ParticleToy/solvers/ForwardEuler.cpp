@@ -1,8 +1,8 @@
 #include <vector>
-#include "Particle.h"
-#include "Force.h"
-#include "ConstraintForce.h"
-#include "LambdaSolver.h"
+#include "../Particle.h"
+#include "../forces/Force.h"
+#include "../forces/ConstraintForce.h"
+#include "../LambdaSolver.h"
 #include "ForwardEuler.h"
 
 void ForwardEuler::evaluate(std::vector<Particle *> particles, std::vector<Force *> forces,
@@ -18,7 +18,7 @@ void ForwardEuler::evaluate(std::vector<Particle *> particles, std::vector<Force
 
     // Apply changes in velocity
     for (auto &particle: particles) {
-        particle->m_Velocity += ( (particle->m_Force/particle->mass) * dt);
+        particle->m_Velocity += ((particle->m_Force / particle->m_Mass) * dt);
         particle->m_Position += (particle->m_Velocity * dt);
     }
 

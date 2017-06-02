@@ -1,6 +1,5 @@
 #include <iostream>
 #include "linearSolver.h"
-#include "Eigen/Dense"
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -8,40 +7,34 @@ using Eigen::VectorXd;
 // vector helper functions
 //
 
-void vecAddEqual(int n, double r[], double v[])
-{
+void vecAddEqual(int n, double r[], double v[]) {
     for (int i = 0; i < n; i++)
         r[i] = r[i] + v[i];
 }
 
-void vecDiffEqual(int n, double r[], double v[])
-{
+void vecDiffEqual(int n, double r[], double v[]) {
     for (int i = 0; i < n; i++)
         r[i] = r[i] - v[i];
 }
 
-void vecAssign(int n, double v1[], double v2[])
-{
+void vecAssign(int n, double v1[], double v2[]) {
     for (int i = 0; i < n; i++)
         v1[i] = v2[i];
 }
 
-void vecTimesScalar(int n, double v[], double s)
-{
+void vecTimesScalar(int n, double v[], double s) {
     for (int i = 0; i < n; i++)
         v[i] *= s;
 }
 
-double vecDot(int n, double v1[], double v2[])
-{
+double vecDot(int n, double v1[], double v2[]) {
     double dot = 0;
     for (int i = 0; i < n; i++)
         dot += v1[i] * v2[i];
     return dot;
 }
 
-double vecSqrLen(int n, double v[])
-{
+double vecSqrLen(int n, double v[]) {
     return vecDot(n, v, v);
 }
 
@@ -58,8 +51,8 @@ double vecSqrLen(int n, double v[])
  * @return
  */
 VectorXd ConjGrad(int n, MatrixXd A, VectorXd x, VectorXd b,
-                double epsilon,    // how low should we go?
-                int *steps) {
+                  double epsilon,    // how low should we go?
+                  int *steps) {
     int i, iMax;
     double alpha, beta, rSqrLen, rSqrLenOld, u;
 

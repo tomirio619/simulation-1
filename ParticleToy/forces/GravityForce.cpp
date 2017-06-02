@@ -10,8 +10,8 @@ GravityForce::GravityForce() : Force() {
 }
 
 void GravityForce::computeForce() {
-    for ( auto &particle : particles  ) {
-        particle->m_Force[1] += particle->mass * this->gravitationalConstant;
+    for (auto &particle : particles) {
+        particle->m_Force[1] += particle->m_Mass * this->gravitationalConstant;
     }
 }
 

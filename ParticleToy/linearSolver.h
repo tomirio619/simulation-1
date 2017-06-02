@@ -42,7 +42,7 @@ double ConjGrad(int n, implicitMatrix *A, double x[], double b[],
 
 VectorXd ConjGrad(int n, MatrixXd A, VectorXd x, VectorXd b,
                   double epsilon,    // how low should we go?
-                int *steps);
+                  int *steps);
 
 // Some vector helper functions
 void vecAddEqual(int n, double r[], double v[]);

@@ -30,7 +30,6 @@ private:
      * Rest angle
      */
     double m_ra;
-
     /**
      * Rest length
      */
@@ -38,12 +37,10 @@ private:
     /**
      * Particles
      */
-    Particle * m_p1;
-    Particle * m_p2;
-    Particle * m_p3;
+    Particle *m_p1;
+    Particle *m_p2;
+    Particle *m_p3;
 };
-
-
 
 
 #endif //SIMULATION_1_ANGULARSPRINGFORCE_H

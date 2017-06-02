@@ -1,6 +1,6 @@
 #include "HorizontalForce.h"
 
-HorizontalForce::HorizontalForce(Particle* p1, double force) : Force() {
+HorizontalForce::HorizontalForce(Particle *p1, double force) : Force() {
 
     this->p1 = p1;
     this->force = force;

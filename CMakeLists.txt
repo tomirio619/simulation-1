@@ -15,42 +15,45 @@ set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
 
 set(SOURCE_FILES
-        ParticleToy/CircularWireConstraint.cpp
-        ParticleToy/CircularWireConstraint.h
+        ParticleToy/constraints/CircularWireConstraint.cpp
+        ParticleToy/constraints/CircularWireConstraint.h
         ParticleToy/linearSolver.cpp
         ParticleToy/linearSolver.h
         ParticleToy/Particle.cpp
         ParticleToy/Particle.h
         ParticleToy/ParticleToy.cpp
-        ParticleToy/RodConstraint.cpp
-        ParticleToy/RodConstraint.h
-        ParticleToy/Solver.cpp
-        ParticleToy/SpringForce.cpp
-        ParticleToy/SpringForce.h
-        ParticleToy/Force.cpp
-        ParticleToy/Force.h
-        ParticleToy/GravityForce.cpp
-        ParticleToy/GravityForce.h
-        ParticleToy/ConstraintForce.cpp
-        ParticleToy/ConstraintForce.h
-        ParticleToy/ForwardEuler.cpp
-        ParticleToy/ForwardEuler.h
-        ParticleToy/RK4.cpp
-        ParticleToy/RK4.h
-        ParticleToy/Midpoint.cpp
-        ParticleToy/Midpoint.h
+        ParticleToy/constraints/RodConstraint.cpp
+        ParticleToy/constraints/RodConstraint.h
+        ParticleToy/solvers/Solver.cpp
+        ParticleToy/forces/SpringForce.cpp
+        ParticleToy/forces/SpringForce.h
+        ParticleToy/forces/Force.cpp
+        ParticleToy/forces/Force.h
+        ParticleToy/forces/GravityForce.cpp
+        ParticleToy/forces/GravityForce.h
+        ParticleToy/forces/ConstraintForce.cpp
+        ParticleToy/forces/ConstraintForce.h
+        ParticleToy/solvers/ForwardEuler.cpp
+        ParticleToy/solvers/ForwardEuler.h
+        ParticleToy/solvers/RK4.cpp
+        ParticleToy/solvers/RK4.h
+        ParticleToy/solvers/Midpoint.cpp
+        ParticleToy/solvers/Midpoint.h
         ParticleToy/LambdaSolver.cpp
         ParticleToy/LambdaSolver.h
-        ParticleToy/SlidingWireConstraint.cpp
-        ParticleToy/SlidingWireConstraint.h
-        ParticleToy/HorizontalForce.cpp
-        ParticleToy/HorizontalForce.h
-        ParticleToy/WallForce.cpp
-        ParticleToy/WallForce.h
-        ParticleToy/AngularSpringForce.cpp
-        ParticleToy/AngularSpringForce.h
+        ParticleToy/constraints/SlidingWireConstraint.cpp
+        ParticleToy/constraints/SlidingWireConstraint.h
+        ParticleToy/forces/HorizontalForce.cpp
+        ParticleToy/forces/HorizontalForce.h
+        ParticleToy/forces/WallForce.cpp
+        ParticleToy/forces/WallForce.h
+        ParticleToy/forces/AngularSpringForce.cpp
+        ParticleToy/forces/AngularSpringForce.h
         ParticleToy/SetUp.cpp
-        ParticleToy/SetUp.h)
+        ParticleToy/SetUp.h
+        ParticleToy/forces/DampForce.cpp
+        ParticleToy/forces/DampForce.h
+        )
 
 find_package (OpenGL REQUIRED)
 
