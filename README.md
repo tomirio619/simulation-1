@@ -1,6 +1,18 @@
 # Prerequisites
+- Windows OS (the project was build and tested on a Windows 10 system)
 - [MinGW (32 bit)](https://sourceforge.net/projects/mingw/files/latest/download)
-- Clion
+- [CLion](https://www.jetbrains.com/clion/)
+
+
+# Building
+Building can be done by opening the project in CLion.
+If the build button is disbabled once the project has been openend, make sure to reload the cmake project.
+This can be done by right clicking on the project and selecting the `Reload CMake Project` option.
+Building of the source code was tested on Windows 10.
+So we recommend to build this project on a Windows system.
+This project is based on CMake, and this will also be the tool CLion uses to compile and build the project.
+You can also decide to do the building yourself without the `help' of CLion.
+However, we have not tested this.
 
 ## Why not use Cygwin?
 
@@ -31,11 +43,3 @@ installing some additional Cygwin libraries and
 , we were still not able to execute the binary as it gave rise to another error which we were not able to fix.
 
 In short, just stick with MinGW :)
-
-## Static Linking of freeglut
-We were not able to statically link freeglut during compilation.
-Although there are several posts out there that specify how to solve this problem([here](http://mattfife.com/?p=226) and [here](http://www.transmissionzero.co.uk/computing/using-glut-with-mingw/))
-Therefore, the resulting binary requires `freeglut.dll` to be present on the system.
-In our *CmakeLists.txt* file, we have included a post build command that copies this required dll to the `cmake-build-debug` folder
-after building has been done. This is the location in which the binary will also be placed after compilation, so this is quite handy.
-
