@@ -19,4 +19,8 @@
 
 /*** END OF FILE ***/
 
+//#ifndef FREEGLUT_STATIC
+#define FREEGLUT_STATIC
+//#endif
+
 #endif /* __FREEGLUT_H__ */
