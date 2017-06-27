@@ -1,21 +1,15 @@
-#include "Particle.h"
+#include "particles/Particle.h"
 #include "forces/SpringForce.h"
 #include "constraints/RodConstraint.h"
 #include "constraints/CircularWireConstraint.h"
 #include "forces/HorizontalForce.h"
 
 #include <GL/glut.h>
-#include "SetUp.h"
-
-/* macros */
-
-/* external definitions (from solver) */
-extern void simulation_step(std::vector<Particle *> particle, std::vector<Force *> forces,
-                            std::vector<ConstraintForce *> constraints, float dt, int isi);
-
-void createWall(double xPosition);
-
-void createCloth(int N);
+#include "demo/SetUp.h"
+#include "particles/ParticleSystem.h"
+#include "solvers/Solver.h"
+#include "solvers/ForwardEuler.h"
+#include "solvers/RK4.h"
 
 /* global variables */
 
@@ -34,10 +28,11 @@ static bool isDragging = false;
 static bool clothCreated = false;
 
 // static Particle *pList;
-static std::vector<Particle *> pVector;
-static std::vector<ConstraintForce *> constraintForces;
+static ParticleSystem * particleSystem;
 
-std::vector<Force *> forceVector;
+
+/* list of solvers */
+static std::vector<Solver *> solvers;
 
 static int win_id;
 static int win_x, win_y;
@@ -64,16 +59,16 @@ free/clear/allocate simulation data
 */
 
 static void free_data(void) {
-    pVector.clear();
-    constraintForces.clear();
-    forceVector.clear();
+    particleSystem->particles.clear();
+    particleSystem->constraints.clear();
+    particleSystem->forces.clear();
 }
 
 static void clear_data(void) {
-    int ii, size = pVector.size();
+    int size = particleSystem->particles.size();
 
-    for (ii = 0; ii < size; ii++) {
-        pVector[ii]->reset();
+    for (int i = 0; i < size; i++) {
+        particleSystem->particles[i]->reset();
     }
 }
 
@@ -84,43 +79,41 @@ static void clear_data(void) {
  */
 void onMenuItemChanged(int item) {
     free_data();
-    clear_data();
-
     switch (item) {
         case 0:
-            SetUp::setUpSlidingCloth(pVector, forceVector, constraintForces, 4);
+            SetUp::setUpSlidingCloth(* particleSystem, 4);
             glutSetWindowTitle("4 by 4 cloth. Right mouse click to slide");
             break;
         case 1:
-            SetUp::setUpSlidingClothWall(pVector, forceVector, constraintForces, 4);
+            SetUp::setUpSlidingClothWall(* particleSystem, 4);
             glutSetWindowTitle("4 by 4 cloth. Right mouse click to slide with a wall");
             break;
         case 2:
-            SetUp::setUpGravity(pVector, forceVector);
+            SetUp::setUpGravity(* particleSystem);
             glutSetWindowTitle("Gravity");
             break;
         case 3:
-            SetUp::setUpSpringforce(pVector, forceVector);
+            SetUp::setUpSpringforce(* particleSystem);
             glutSetWindowTitle("Spring m_Force");
             break;
         case 4:
-            SetUp::setUpRodConstraint(pVector, forceVector, constraintForces);
+            SetUp::setUpRodConstraint(* particleSystem);
             glutSetWindowTitle("Rod constraint with gravity at bottom");
             break;
         case 5:
-            SetUp::setUpCircularConstraint(pVector, forceVector, constraintForces);
+            SetUp::setUpCircularConstraint(* particleSystem);
             glutSetWindowTitle("Circular wire constraint with gravity");
             break;
         case 6:
-            SetUp::setUpHorizontalConstraint(pVector, forceVector, constraintForces);
+            SetUp::setUpHorizontalConstraint(* particleSystem);
             glutSetWindowTitle("Sliding right over line constraint, with gravity");
             break;
         case 7:
-            SetUp::setUpMixedConstraint(pVector, forceVector, constraintForces);
+            SetUp::setUpMixedConstraint(* particleSystem);
             glutSetWindowTitle("Mixture of several constraints");
             break;
         case 8:
-            SetUp::setUpAngularSpring(pVector, forceVector);
+            SetUp::setUpAngularSpring(* particleSystem);
             glutSetWindowTitle("Angular constraint");
             break;
 
@@ -129,6 +122,11 @@ void onMenuItemChanged(int item) {
 }
 
 static void init_system(void) {
+    /* initialize */
+    particleSystem = new ParticleSystem();
+    solvers.push_back(new ForwardEuler());
+//    solvers.push_back(new MidPoint());
+//    solvers.push_back(new RK4());
     const double dist = 0.2;
     const Vec2f center(0.0, 0.0);
     const Vec2f offset(dist, 0.0);
@@ -136,7 +134,7 @@ static void init_system(void) {
     double particleMass = 1.0f;
 
     Particle *centerParticle = new Particle(center, particleMass);
-    pVector.push_back(centerParticle);
+    particleSystem->particles.push_back(centerParticle);
 
 }
 
@@ -226,19 +224,19 @@ void onMouseButton(int button, int state, int x, int y) {
         if (!isDragging) {
             // Left button is released and we were not dragging the mouse
             bool collides = false;
-            if (noCloseParticles(pVector, normalizedMouse, proximity_threshold)) {
-                pVector.push_back(new Particle(normalizedMouse, 1));
+            if (noCloseParticles(particleSystem->particles, normalizedMouse, proximity_threshold)) {
+                particleSystem->particles.push_back(new Particle(normalizedMouse, 1));
             }
         } else {
             // We finished a mouse drag, so we have to check whether we can place particles on both end points
             mouseDragNewPos = normalizedMouse;
-            if (noCloseParticles(pVector, mouseDragOrgPos, proximity_threshold) &&
-                noCloseParticles(pVector, mouseDragNewPos, proximity_threshold)) {
+            if (noCloseParticles(particleSystem->particles, mouseDragOrgPos, proximity_threshold) &&
+                noCloseParticles(particleSystem->particles, mouseDragNewPos, proximity_threshold)) {
                 Particle *p1 = new Particle(mouseDragOrgPos, 1);
                 Particle *p2 = new Particle(mouseDragNewPos, 1);
-                forceVector.push_back(new SpringForce(p1, p2, 0.2f, 0.2f, 0.2f));
-                pVector.push_back(p1);
-                pVector.push_back(p2);
+                particleSystem->forces.push_back(new SpringForce(p1, p2, 0.2f, 0.2f, 0.2f));
+                particleSystem->particles.push_back(p1);
+                particleSystem->particles.push_back(p2);
                 isDragging = false;
             }
         }
@@ -250,13 +248,13 @@ void onMouseButton(int button, int state, int x, int y) {
             //If we have a cloth / are in cloth mode, apply the horizontal m_Force on all the particles
             //of the first row, such that we have a sliding effect
             for (int i = 0; i < clothDimension; ++i) {
-                Force *horizontalForce = new HorizontalForce(pVector[i], 0.3f);
-                forceVector.push_back(horizontalForce);
+                Force *horizontalForce = new HorizontalForce(particleSystem->particles[i], 0.3f);
+                particleSystem->forces.push_back(horizontalForce);
             }
         }
         //Get the particle which is close and apply the horizontal m_Force on that particle
-        Force *horizontalForce = new HorizontalForce(pVector[0], 0.05f);
-        forceVector.push_back(horizontalForce);
+        Force *horizontalForce = new HorizontalForce(particleSystem->particles[0], 0.05f);
+        particleSystem->forces.push_back(horizontalForce);
     }
 }
 
@@ -312,29 +310,7 @@ static void post_display(void) {
     glutSwapBuffers();
 }
 
-static void draw_particles(void) {
-    int size = pVector.size();
 
-    for (int ii = 0; ii < size; ii++) {
-        pVector[ii]->draw();
-        pVector[ii]->drawForce();
-        pVector[ii]->drawVelocity();
-    }
-}
-
-static void draw_constraints(void) {
-    for (auto &constraint : constraintForces) {
-        constraint->draw();
-    }
-}
-
-
-static void draw_forces(void) {
-    for (auto &force : forceVector) {
-        force->draw();
-    }
-
-}
 
 /*
 ----------------------------------------------------------------------
@@ -374,10 +350,10 @@ static void get_from_UI() {
 }
 
 static void remap_GUI() {
-    int ii, size = pVector.size();
-    for (ii = 0; ii < size; ii++) {
-        pVector[ii]->m_Position[0] = pVector[ii]->m_ConstructPos[0];
-        pVector[ii]->m_Position[1] = pVector[ii]->m_ConstructPos[1];
+    int i, size = particleSystem->particles.size();
+    for (i = 0; i < size; i++) {
+        particleSystem->particles[i]->m_Position[0] = particleSystem->particles[i]->m_ConstructPos[0];
+        particleSystem->particles[i]->m_Position[1] = particleSystem->particles[i]->m_ConstructPos[1];
     }
 }
 
@@ -451,7 +427,11 @@ static void reshape_func(int width, int height) {
 }
 
 static void idle_func(void) {
-    if (dsim) simulation_step(pVector, forceVector, constraintForces, dt, integrationSchemeIndex);
+    if (dsim) {
+        // TODO rewrite
+        solvers[integrationSchemeIndex % 1]->simulationStep(particleSystem, dt);
+        //simulation_step(pVector, forceVector, constraintForces, dt, integrationSchemeIndex);
+    }
     else {
         get_from_UI();
         remap_GUI();
@@ -480,9 +460,7 @@ void setUpMenu() {
 static void display_func(void) {
     pre_display();
 
-    draw_forces();
-    draw_constraints();
-    draw_particles();
+    particleSystem->draw();
 
     post_display();
 }
@@ -521,7 +499,6 @@ static void open_glut_window(void) {
     glutIdleFunc(idle_func);
     glutDisplayFunc(display_func);
 }
-
 
 /*
 ----------------------------------------------------------------------

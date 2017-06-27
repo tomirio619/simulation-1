@@ -17,14 +17,15 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}
 set(SOURCE_FILES
         ParticleToy/constraints/CircularWireConstraint.cpp
         ParticleToy/constraints/CircularWireConstraint.h
-        ParticleToy/linearSolver.cpp
-        ParticleToy/linearSolver.h
-        ParticleToy/Particle.cpp
-        ParticleToy/Particle.h
+        ParticleToy/particles/Particle.cpp
+        ParticleToy/particles/Particle.h
+        ParticleToy/particles/ParticleSystem.cpp
+        ParticleToy/particles/ParticleSystem.h
+        ParticleToy/solvers/Solver.cpp
+        ParticleToy/solvers/Solver.h
         ParticleToy/ParticleToy.cpp
         ParticleToy/constraints/RodConstraint.cpp
         ParticleToy/constraints/RodConstraint.h
-        ParticleToy/solvers/Solver.cpp
         ParticleToy/forces/SpringForce.cpp
         ParticleToy/forces/SpringForce.h
         ParticleToy/forces/Force.cpp
@@ -39,8 +40,8 @@ set(SOURCE_FILES
         ParticleToy/solvers/RK4.h
         ParticleToy/solvers/Midpoint.cpp
         ParticleToy/solvers/Midpoint.h
-        ParticleToy/LambdaSolver.cpp
-        ParticleToy/LambdaSolver.h
+        ParticleToy/constraints/LambdaSolver.cpp
+        ParticleToy/constraints/LambdaSolver.h
         ParticleToy/constraints/SlidingWireConstraint.cpp
         ParticleToy/constraints/SlidingWireConstraint.h
         ParticleToy/forces/HorizontalForce.cpp
@@ -49,8 +50,8 @@ set(SOURCE_FILES
         ParticleToy/forces/WallForce.h
         ParticleToy/forces/AngularSpringForce.cpp
         ParticleToy/forces/AngularSpringForce.h
-        ParticleToy/SetUp.cpp
-        ParticleToy/SetUp.h
+        ParticleToy/demo/SetUp.cpp
+        ParticleToy/demo/SetUp.h
         ParticleToy/forces/DampForce.cpp
         ParticleToy/forces/DampForce.h
         )

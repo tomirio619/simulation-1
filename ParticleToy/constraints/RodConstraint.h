@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Particle.h"
+#include "../particles/Particle.h"
 #include "../forces/ConstraintForce.h"
 #include "Eigen/Dense"
 
@@ -10,8 +10,6 @@ using Eigen::VectorXd;
 class RodConstraint : public ConstraintForce {
 public:
     RodConstraint(Particle *p1, Particle *p2, double dist);
-
-    Vec2f computeForce(Particle *p);
 
     void draw();
 

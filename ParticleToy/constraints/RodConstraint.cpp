@@ -1,5 +1,5 @@
 #include "RodConstraint.h"
-#include "../LambdaSolver.h"
+#include "LambdaSolver.h"
 #include <GL/glut.h>
 
 using Eigen::MatrixXd;

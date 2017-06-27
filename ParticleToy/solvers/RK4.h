@@ -1,5 +1,5 @@
 #include <vector>
-#include "../Particle.h"
+#include "../particles/Particle.h"
 #include "../forces/Force.h"
 #include "../forces/ConstraintForce.h"
 

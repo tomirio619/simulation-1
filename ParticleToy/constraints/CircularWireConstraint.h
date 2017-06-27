@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Particle.h"
+#include "../particles/Particle.h"
 #include "../forces/ConstraintForce.h"
 
 class CircularWireConstraint : public ConstraintForce {

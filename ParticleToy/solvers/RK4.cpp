@@ -1,7 +1,7 @@
 #include <vector>
-#include "../Particle.h"
+#include "../particles/Particle.h"
 #include "RK4.h"
-#include "../LambdaSolver.h"
+#include "../constraints/LambdaSolver.h"
 
 void applyForces(std::vector<Force *> forces) {
     for (auto &force : forces) {

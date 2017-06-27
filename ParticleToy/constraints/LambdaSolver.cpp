@@ -1,5 +1,4 @@
 #include "LambdaSolver.h"
-#include "linearSolver.h"
 #include "Eigen/IterativeLinearSolvers"
 
 using namespace std;

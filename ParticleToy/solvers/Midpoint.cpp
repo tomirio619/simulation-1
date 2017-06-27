@@ -1,9 +1,9 @@
 #include <vector>
-#include "../Particle.h"
+#include "../particles/Particle.h"
 #include "../forces/Force.h"
 #include "../forces/ConstraintForce.h"
 #include "Midpoint.h"
-#include "../LambdaSolver.h"
+#include "../constraints/LambdaSolver.h"
 
 
 void Midpoint::evaluate(std::vector<Particle *> particles, std::vector<Force *> forces,

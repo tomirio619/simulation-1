@@ -6,9 +6,6 @@ Particle::Particle(const Vec2f &ConstructPos, double m) :
     this->m_Mass = m;
 }
 
-Particle::~Particle(void) {
-}
-
 void Particle::reset() {
     m_Position = m_ConstructPos;
     m_Velocity = Vec2f(0.0, 0.0);
