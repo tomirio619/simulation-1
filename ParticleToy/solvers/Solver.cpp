@@ -2,7 +2,7 @@
 
 Solver::Solver() {}
 
-int Solver::particleDims(ParticleSystem *p) {
+unsigned int Solver::particleDims(ParticleSystem *p) {
     return 4 * p->particles.size();
 }
 
@@ -45,9 +45,15 @@ void Solver::scaleVector(vector<float> &src, float scalar) {
     }
 }
 
-void Solver::addVectors(vector<float> &v1, vector<float> &v2, vector<float> &dest) {
+void Solver::addVectors(vector<float> &v1, vector<float> &v2, vector<float> &dst) {
     for (int i = 0; i < v1.size(); i++) {
-        dest[i] = v1[i] + v2[i];
+        dst[i] = v1[i] + v2[i];
+    }
+}
+
+void Solver::scaleVector(vector<float> &src, float scalar, vector<float> &dst) {
+    for (int i = 0; i < src.size(); i++) {
+        dst[i] = src[i] * scalar;
     }
 }
 

@@ -14,7 +14,7 @@
 
 class ForwardEuler : public Solver{
 public:
-    void simulationStep(ParticleSystem *p, float deltaT) override;
+    void simulationStep(ParticleSystem *p, float dt) override;
 
 };
 

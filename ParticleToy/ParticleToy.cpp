@@ -1,14 +1,13 @@
 #include "particles/Particle.h"
 #include "forces/SpringForce.h"
 #include "constraints/RodConstraint.h"
-#include "constraints/CircularWireConstraint.h"
 #include "forces/HorizontalForce.h"
 
 #include <GL/glut.h>
 #include "demo/SetUp.h"
-#include "particles/ParticleSystem.h"
 #include "solvers/Solver.h"
 #include "solvers/ForwardEuler.h"
+#include "solvers/Midpoint.h"
 #include "solvers/RK4.h"
 
 /* global variables */
@@ -28,7 +27,7 @@ static bool isDragging = false;
 static bool clothCreated = false;
 
 // static Particle *pList;
-static ParticleSystem * particleSystem;
+static ParticleSystem *particleSystem;
 
 
 /* list of solvers */
@@ -47,10 +46,6 @@ static Vec2f center = Vec2f(0.0, 0.0);
 static int integrationSchemeIndex = 0;
 static std::string integrationSchemeNames[] = {"Forward Euler", "Midpoint", "Runga Kutta 4"};
 
-static SpringForce *delete_this_dummy_spring = NULL;
-static RodConstraint *delete_this_dummy_rod = NULL;
-static CircularWireConstraint *delete_this_dummy_wire = NULL;
-
 
 /*
 ----------------------------------------------------------------------
@@ -58,13 +53,13 @@ free/clear/allocate simulation data
 ----------------------------------------------------------------------
 */
 
-static void free_data(void) {
+static void free_data() {
     particleSystem->particles.clear();
     particleSystem->constraints.clear();
     particleSystem->forces.clear();
 }
 
-static void clear_data(void) {
+static void clear_data() {
     int size = particleSystem->particles.size();
 
     for (int i = 0; i < size; i++) {
@@ -81,53 +76,54 @@ void onMenuItemChanged(int item) {
     free_data();
     switch (item) {
         case 0:
-            SetUp::setUpSlidingCloth(* particleSystem, 4);
+            SetUp::setUpSlidingCloth(*particleSystem, 4);
             glutSetWindowTitle("4 by 4 cloth. Right mouse click to slide");
             break;
         case 1:
-            SetUp::setUpSlidingClothWall(* particleSystem, 4);
+            SetUp::setUpSlidingClothWall(*particleSystem, 4);
             glutSetWindowTitle("4 by 4 cloth. Right mouse click to slide with a wall");
             break;
         case 2:
-            SetUp::setUpGravity(* particleSystem);
+            SetUp::setUpGravity(*particleSystem);
             glutSetWindowTitle("Gravity");
             break;
         case 3:
-            SetUp::setUpSpringforce(* particleSystem);
+            SetUp::setUpSpringforce(*particleSystem);
             glutSetWindowTitle("Spring m_Force");
             break;
         case 4:
-            SetUp::setUpRodConstraint(* particleSystem);
+            SetUp::setUpRodConstraint(*particleSystem);
             glutSetWindowTitle("Rod constraint with gravity at bottom");
             break;
         case 5:
-            SetUp::setUpCircularConstraint(* particleSystem);
+            SetUp::setUpCircularConstraint(*particleSystem);
             glutSetWindowTitle("Circular wire constraint with gravity");
             break;
         case 6:
-            SetUp::setUpHorizontalConstraint(* particleSystem);
+            SetUp::setUpHorizontalConstraint(*particleSystem);
             glutSetWindowTitle("Sliding right over line constraint, with gravity");
             break;
         case 7:
-            SetUp::setUpMixedConstraint(* particleSystem);
+            SetUp::setUpMixedConstraint(*particleSystem);
             glutSetWindowTitle("Mixture of several constraints");
             break;
         case 8:
-            SetUp::setUpAngularSpring(* particleSystem);
+            SetUp::setUpAngularSpring(*particleSystem);
             glutSetWindowTitle("Angular constraint");
             break;
-
+        default:
+            return;
     }
 
 }
 
-static void init_system(void) {
+static void init_system() {
     /* initialize */
     particleSystem = new ParticleSystem();
     solvers.push_back(new ForwardEuler());
-//    solvers.push_back(new MidPoint());
-//    solvers.push_back(new RK4());
-    const double dist = 0.2;
+    solvers.push_back(new Midpoint());
+    solvers.push_back(new RK4());
+    const float dist = 0.2;
     const Vec2f center(0.0, 0.0);
     const Vec2f offset(dist, 0.0);
 
@@ -290,8 +286,8 @@ static void post_display(void) {
     if (dump_frames) {
         const int FRAME_INTERVAL = 4;
         if ((frame_number % FRAME_INTERVAL) == 0) {
-            const unsigned int w = glutGet(GLUT_WINDOW_WIDTH);
-            const unsigned int h = glutGet(GLUT_WINDOW_HEIGHT);
+            const signed int w = glutGet(GLUT_WINDOW_WIDTH);
+            const signed int h = glutGet(GLUT_WINDOW_HEIGHT);
             unsigned char *buffer = (unsigned char *) malloc(w * h * 4 * sizeof(unsigned char));
             if (!buffer)
                 exit(-1);
@@ -309,7 +305,6 @@ static void post_display(void) {
 
     glutSwapBuffers();
 }
-
 
 
 /*
@@ -391,11 +386,13 @@ static void key_func(unsigned char key, int x, int y) {
         case 'Q':
             free_data();
             exit(0);
-            break;
 
         case ' ':
             dsim = !dsim;
             break;
+
+        default:
+            return;
     }
 }
 
@@ -429,10 +426,9 @@ static void reshape_func(int width, int height) {
 static void idle_func(void) {
     if (dsim) {
         // TODO rewrite
-        solvers[integrationSchemeIndex % 1]->simulationStep(particleSystem, dt);
+        solvers[integrationSchemeIndex % 3]->simulationStep(particleSystem, dt);
         //simulation_step(pVector, forceVector, constraintForces, dt, integrationSchemeIndex);
-    }
-    else {
+    } else {
         get_from_UI();
         remap_GUI();
     }

@@ -2,6 +2,7 @@
 #include "../particles/Particle.h"
 #include "../forces/Force.h"
 #include "../forces/ConstraintForce.h"
+#include "Solver.h"
 
 #ifndef SIMULATION_1_RUNGEKUTTAFOURTH_H
 #define SIMULATION_1_RUNGEKUTTAFOURTH_H
@@ -11,11 +12,9 @@
 // Therefore, we have to save them now so we can restore them later.
 // We also need to clear this vector before we evaluate.
 
-class RK4 {
+class RK4 : public Solver {
 public:
-    static void
-    evaluate(std::vector<Particle *> particles, std::vector<Force *> forces, std::vector<ConstraintForce *> constraints,
-             float dt);
+    void simulationStep(ParticleSystem *p, float dt) override;
 };
 
 #endif //SIMULATION_1_RUNGEKUTTAFOURTH_H

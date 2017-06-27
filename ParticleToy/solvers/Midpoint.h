@@ -7,10 +7,9 @@
 #include "../particles/Particle.h"
 #include "../forces/Force.h"
 #include "../forces/ConstraintForce.h"
+#include "Solver.h"
 
-class Midpoint {
+class Midpoint : public Solver{
 public:
-    static void
-    evaluate(std::vector<Particle *> particles, std::vector<Force *> forces, std::vector<ConstraintForce *> constraints,
-             float dt);
+    void simulationStep(ParticleSystem *p, float dt) override;
 };
